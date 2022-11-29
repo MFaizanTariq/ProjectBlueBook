@@ -33,7 +33,8 @@
         <div class="nav nav-tabs" id="profile_update" role="tablist">
             <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Personal Details</button>
             <button class="nav-link" id="interests-tab" data-bs-toggle="tab" data-bs-target="#interests" type="button" role="tab" aria-controls="interests" aria-selected="false">News Interests</button>
-            <button class="nav-link" id="friends-tab" data-bs-toggle="tab" data-bs-target="#friends" type="button" role="tab" aria-controls="friends" aria-selected="false">Friend / Followers</button>
+            <button class="nav-link" id="friends-tab" data-bs-toggle="tab" data-bs-target="#friends" type="button" role="tab" aria-controls="friends" aria-selected="false">Invite / Friend </button>
+            <button class="nav-link" id="message-tab" data-bs-toggle="tab" data-bs-target="#message" type="button" role="tab" aria-controls="message" aria-selected="false">Messages </button>
         </div>
     </nav>
 
@@ -137,6 +138,18 @@
                      </form>
                 </div>
             </div>
+        </div>
+        <div class="tab-pane main-1" id="message" role="tabpanel" aria-labelledby="message-tab" tabindex="0">
+        <h1>
+            {% for ct1 in range(0, sz) %}
+                <form id="form5" name="form5" method="POST" action="accept_fr_req">
+                <div class="d-flex justify-content-center my-5">
+                    <h4 class>{{ureq[ct1][1]}}</h4><h4>&nbsp;&nbsp;</h4>
+                    <button name="Send friend invitation" type="submit" class="btn btn-primary">Accept</button>
+                </div>
+           {% endfor %}
+
+        </h1>
         </div>
 
     </div>

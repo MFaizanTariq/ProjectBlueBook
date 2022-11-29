@@ -24,12 +24,14 @@ class User(db.Model):
     cat_3 = db.Column(db.String(15), nullable=False)
     u_act = db.relationship('User_Activity', backref=db.backref('user'))
     u_msg = db.relationship('User_Message', backref=db.backref('user'))
+    u_fr = db.relationship('User_Fr_List', backref=db.backref('user'))
 
     def Add_User(uname, fullname, firstname, lastname, email, password, location, nw_per_page, cat_1, cat_2, cat_3):
         new_user = User(uname=uname, fullname=fullname, firstname=firstname, lastname=lastname, email=email, 
             password=password, location=location, nw_per_page=nw_per_page, cat_1=cat_1, cat_2=cat_2, cat_3=cat_3)
         db.session.add(new_user)
         db.session.commit()
+    
     
     def Chk_Uname(uname):
         u_name = db.session.query(User).filter(User.uname == uname).first()
@@ -125,9 +127,20 @@ class User_Message(db.Model):
         return
 
     def User_Pen_Req(u_id):
-        u_reqs= db.session.query(User_Message).filter(User_Message.u_id == u_id, User_Message.msg_tp == 1,
+        u_reqs= db.session.query(User_Message).filter(User_Message.u_rec == u_id, User_Message.msg_tp == 1,
                                                 User_Message.msg_res == 0)
         return u_reqs
+
+class User_Fr_List(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    u_fr = db.Column(db.Integer, nullable=False)
+
+    def User_Add_Fr(u_id, u_fr):
+        new_frd = User_Fr_List(u_id=u_id, u_fr=u_fr)
+        db.session.add(new_frd)
+        db.session.commit()
+        return
 
 
 if not path.exists('instance/' + DB_NAME):

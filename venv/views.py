@@ -84,11 +84,14 @@ def main_page():
     return render_template('main_page.html', Title1=nw1, Sz1=size_nw1, Title2=nw2, Sz2=size_nw2, Title3=nw3,
                            Sz3=size_nw3,Cat1=user_data[6], Cat2=user_data[7], Cat3=user_data[8])
 
+
 @views.route("/profile", methods=['GET', 'POST'])
 def profile_update():
-    from venv.controller import User_Data, Cat_Update, User_Act_Add
+    from venv.controller import User_Data, Cat_Update, User_Act_Add, Get_Fr_Req
     u_id = session["u_id"]
     user_data = User_Data(u_id)
+    u_reqs = Get_Fr_Req(u_id)
+    Sz = len(u_reqs)
     if request.method == 'POST':
         cat1 = request.form['cat-1']
         cat2 = request.form['cat-2']
@@ -102,7 +105,7 @@ def profile_update():
 
         
     return render_template('profile_update.html', username=user_data[0], email=user_data[4], firstname=user_data[2],
-                lastname=user_data[3], country=user_data[5], cat1=user_data[6], cat2=user_data[7], cat3=user_data[8])
+        lastname=user_data[3], country=user_data[5], cat1=user_data[6], cat2=user_data[7], cat3=user_data[8], sz=Sz, ureq=u_reqs)
 
 
 @views.route("/profile2", methods=['GET', 'POST'])
@@ -132,6 +135,22 @@ def send_fr_req():
     if request.method == 'POST':
         msg='Friend request sent'
         Send_Fr_Req(u_rec, u_send)
+        User_Act_Add(u_send, msg)
+        return render_template('profile_update.html', message=msg)
+
+    return redirect(url_for("views.profile_update"))
+
+
+@views.route('/accept_fr_req', methods=['GET', 'POST'])
+def accept_fr_req():
+    from venv.controller import User_Act_Add, Send_Fr_Req, Accept_Fr_Req
+    u_id = session["u_id"]
+    u_fr = int(request.form["u_rec"])
+
+    if request.method == 'POST':
+        msg='Friend request accepted'
+        Accept_Fr_Req(u_id, u_fr)
+        User_Act_Add(u_send, msg)
         return render_template('profile_update.html', message=msg)
 
     return redirect(url_for("views.profile_update"))

@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'ProjectBlueBook'
 app.register_blueprint(views, url_prefix='/')
 app.register_blueprint(auths, url_prefix='/')
 
-from venv.models import User, Nw_Data, User_Activity, User_Message
+from venv.models import User, Nw_Data, User_Activity, User_Message, User_Fr_List
 
 def User_Pre_Req(uname, email):
     msg_uname = 'Username aready exists'
@@ -55,6 +55,7 @@ def User_Update(u_id, firstname, lastname, location):
 def User_News(country, cat_1):
     dt = []
     nws = Nw_Data.News_Fetch(country, cat_1)
+    
     for nw in nws:
         dt.append([nw.Title, nw.Desc, nw.Link])
 
@@ -70,4 +71,20 @@ def Send_Fr_Req(u_rec, u_send):
     msg_tp = 1
     msg_res = 0
     User_Message.User_Add_Msg(u_rec,u_send, msg_tp, msg_res, msg)
+    return
+
+def Get_Fr_Req(u_id):
+    dt = []
+    u_reqs = User_Message.User_Pen_Req(u_id)
+
+    for u_req in u_reqs:
+        u_send = u_req.u_send
+        u_detail = User.User_Details(u_send)
+        u_s_name = u_detail[0]
+        dt.append([u_send, u_s_name])
+    
+    return dt
+
+def Accept_Fr_Req(u_id, u_fr):
+    User_Fr_List.User_Add_Fr(u_id, u_fr)
     return
