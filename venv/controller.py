@@ -81,10 +81,17 @@ def Get_Fr_Req(u_id):
         u_send = u_req.u_send
         u_detail = User.User_Details(u_send)
         u_s_name = u_detail[0]
-        dt.append([u_send, u_s_name])
+        dt.append([u_send, u_s_name, u_req.id])
     
     return dt
 
-def Accept_Fr_Req(u_id, u_fr):
-    User_Fr_List.User_Add_Fr(u_id, u_fr)
+def Decide_Fr_Req(msg_id, u_dec):
+    msg_data = User_Message.Msg_Detail(msg_id)
+    u_id = msg_data.u_rec
+    u_fr = msg_data.u_send
+    if u_dec == 1:
+        User_Fr_List.User_Add_Fr(u_id, u_fr)
+        User_Message.Msg_Update(msg_id)
+    else:
+        User_Message.Msg_Update(msg_id)
     return

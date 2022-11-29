@@ -141,17 +141,26 @@ def send_fr_req():
     return redirect(url_for("views.profile_update"))
 
 
-@views.route('/accept_fr_req', methods=['GET', 'POST'])
-def accept_fr_req():
-    from venv.controller import User_Act_Add, Send_Fr_Req, Accept_Fr_Req
+@views.route('/decide_req', methods=['GET', 'POST'])
+def decide_req():
+    from venv.controller import Decide_Fr_Req, User_Act_Add
     u_id = session["u_id"]
-    u_fr = int(request.form["u_rec"])
 
     if request.method == 'POST':
-        msg='Friend request accepted'
-        Accept_Fr_Req(u_id, u_fr)
-        User_Act_Add(u_send, msg)
-        return render_template('profile_update.html', message=msg)
+        msg_id = int(request.form['fr_id'])
+        u_dec = int(request.form['decision'])
+        print(msg_id,u_dec)
+        input()
+        if u_dec == 1:
+            Decide_Fr_Req(msg_id, u_dec)
+            msg = "Accepted Friend Request"
+            User_Act_Add(u_id, msg)
+
+        else:
+            Decide_Fr_Req(msg_id, u_dec)
+            msg = "Rejected Friend Request"
+            User_Act_Add(u_id, msg)
+        return redirect(url_for("views.profile_update"))
 
     return redirect(url_for("views.profile_update"))
 

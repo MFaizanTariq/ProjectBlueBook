@@ -131,6 +131,16 @@ class User_Message(db.Model):
                                                 User_Message.msg_res == 0)
         return u_reqs
 
+    def Msg_Detail(id):
+        msg_data = db.session.query(User_Message).filter(User_Message.id == id).first()
+        return msg_data
+
+    def Msg_Update(id):
+        msg_res = 1
+        db.session.query(User_Message).filter(User_Message.id == id).update({'msg_res' : msg_res})
+        db.session.commit()
+        return
+
 class User_Fr_List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
