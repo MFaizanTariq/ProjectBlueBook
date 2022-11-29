@@ -1,0 +1,44 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!doctype html>
+<html lang="en">
+<link>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap-utilities.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='test.css')}}">
+
+    <nav class="navbar navbar-expand-lg bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-blue" href="#">Bluebook FB Sign Up</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <a class="text-white" href="{{url_for('views.index')}}">Home</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</head>
+<body>
+  <form class="form-signin main-7" method="POST" action="/protected_area2">
+        {% if message %}
+             <p class="row justify-content-center alert alert-danger alert-dismissible">{{ message }}</p>
+        {% endif %}
+      <h3 class="form-signin-heading container">Welcome {{session["name"]}}, Please sign up </h3>
+      <p>{{ wtf.form_field(form.username)}}</p>
+      <p>{{ wtf.form_field(form.firstname)}}</p>
+      <p>{{ wtf.form_field(form.lastname)}}</p>
+      <p>{{ wtf.form_field(form.password)}}</p>
+      <p>{{ wtf.form_field(form.location)}}</p>
+      <button class="btn btn-lg btn-primary btn-block container" type="submit">Sign Up</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,65 @@
+body{
+    background-color: rgb(200,200,200);
+}
+
+.main-1{
+    position: absolute;
+    background-color: rgb(230,230,230);
+    top: 6%;
+    left: 40%;
+}
+
+
+.main-13{
+    position: absolute;
+    top: 12%;
+}
+
+.main-2{
+    background-color: rgb(100,94,94);
+    width:100%;
+    position: absolute;
+    left: 0%;
+    top: 11%;
+}
+
+.main-3{
+    width:35%;
+    position: absolute;
+    left: 16%;
+    top: 12%;
+}
+
+.main-4{
+    width:34%;
+    position: absolute;
+    left: 51%;
+    top: 12%;
+}
+
+.main-5{
+    background-color: rgba(93,94,94,0.7);
+    margin: 2px;
+    padding: 5px;
+}
+
+.main-6{
+    color: rgb(0,0,0);
+    text-align:center;
+    font-weight: bold;
+    padding: 2%;
+}
+
+.main-10{
+    color: rgb(255,255,255);
+}
+
+.main-12{
+    color: rgb(255,255,255);
+    padding: 2%;
+}
+
+.main-11{
+    color: rgb(50,150,255);
+    text-align: center;
+    }

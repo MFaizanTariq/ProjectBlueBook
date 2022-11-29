@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<link>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible">
+    <title>Profile Update</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap-utilities.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='test.css')}}">
+
+    <nav class="navbar navbar-expand-lg bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-blue" href="#">Project BlueBook</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <a class="nav-link active text-white" aria-current="page" href="{{ url_for('views.main_page') }}">Main Page</a>
+                    <a class="nav-link text-white" href="{{ url_for('views.logout') }}">Log Out</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</head>
+<body>
+
+    <nav class="main-2">
+        <div class="nav nav-tabs" id="profile_update" role="tablist">
+            <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Personal Details</button>
+            <button class="nav-link" id="interests-tab" data-bs-toggle="tab" data-bs-target="#interests" type="button" role="tab" aria-controls="interests" aria-selected="false">News Interests</button>
+            <button class="nav-link" id="friends-tab" data-bs-toggle="tab" data-bs-target="#friends" type="button" role="tab" aria-controls="friends" aria-selected="false">Friend / Followers</button>
+        </div>
+    </nav>
+
+    <div class="tab-content" id="profile_update">
+
+        <div class="tab-pane main-1 active" id="profile" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+            <div class="row justify-content-center my-3">
+                {% if message %}
+                <p class="row justify-content-center alert alert-success alert-dismissible">{{ message }}</p>
+                {% endif %}
+                <div class="col-md-4">
+                    <form id="form1" name="form1" method="POST" action="profile2">
+                        <label>Username:</label>
+                        <input class="form-control my-3" type="text" placeholder="{{username}}" aria-label="Disabled input example" disabled>
+                        <label>Email:</label>
+                        <input class="form-control my-3" type="text" placeholder="{{email}}" aria-label="Disabled input example" disabled>
+                        <label for="firstname" class="form-label my-3">Update First Name:</label>
+                        <input type="name" name="firstname" id="firstname" class="form-control" placeholder="{{ firstname }}">
+                        <label for="lastname" class="form-label my-3">Update Last Name:</label>
+                        <input type="name" name="lastname" id="lastname" class="form-control" placeholder="{{ lastname }}">
+                        <label for="country" class="form-label my-3">Update Country:</label>
+                        <input type="text" name="country" id="country" class="form-control" placeholder="{{ country }}">
+                        <div class="text-center my-3 row-cols-4">
+                            <button name="submit1" type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane main-1" id="interests" role="tabpanel" aria-labelledby="interests-tab" tabindex="1">
+            <div class="row justify-content-center my-3">
+                {% if message %}
+                <p class="row justify-content-center alert alert-success alert-dismissible">{{ message }}</p>
+                {% endif %}
+                <div class="col-md-4">
+                    <form id="form2" name="form2" method="POST" action="profile">
+                        <label for="cat-1" class="form-label my-3">Update Category-1</label>
+                        <select name="cat-1" id="cat-1" class="form-select" aria-label="Default select example">
+                                <option selected>{{ cat1 }}</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="business">Business</option>
+                                <option value="sports">Sports</option>
+                                <option value="health">Health</option>
+                                <option value="science">Science</option>
+                                <option value="technology">Technology</option>
+                          </select>
+
+                        <label for="cat-2" class="form-label my-3">Update Category-2</label>
+                        <select name="cat-2" id="cat-2" class="form-select" aria-label="Default select example">
+                                <option selected>{{cat2}}</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="business">Business</option>
+                                <option value="sports">Sports</option>
+                                <option value="health">Health</option>
+                                <option value="science">Science</option>
+                                <option value="technology">Technology</option>
+                           </select>
+                        <label for="cat-3" class="form-label my-3">Update Category-3</label>
+                        <select name="cat-3" id="cat-3" class="form-select" aria-label="Default select example">
+                                <option selected>{{ cat3 }}</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="business">Business</option>
+                                <option value="sports">Sports</option>
+                                <option value="health">Health</option>
+                                <option value="science">Science</option>
+                                <option value="technology">Technology</option>
+                                </select>
+                        <label for="newslmt" class="form-label my-3">No. of news per interest</label>
+                        <select name="newslmt" id="newslmt" class="form-select" aria-label="Default select example">
+                                <option selected>{{ news_lmt }}</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                        </select>
+                        <div class="text-center my-3 row-cols-4">
+                            <button name="submit2" type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane main-1" id="friends" role="tabpanel" aria-labelledby="friends-tab" tabindex="0">
+            <div class="row justify-content-center my-3">
+                <div class="col-md-4">
+                    <form id="form3" name="form3" method="POST" action="send_invite">
+                        <label for="email" class="form-label my-3">Email:</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Mention email for invitation">
+                        <div class="text-center my-3 row-cols-4">
+                                <button name="Send email invite" type="submit" class="btn btn-primary">Send invite</button>
+                        </div>
+                     </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{url_for('static', filename='/js/bootstrap.bundle.js')}}"></script>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<link>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap-utilities.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='test.css')}}">
+
+    <nav class="navbar navbar-expand-lg bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">Project BlueBook</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <a class="nav-link text-white" href="{{ url_for('views.profile_update') }}">Profile</a>
+                    <a class="nav-link text-white" href="{{ url_for('views.logout') }}">Log Out</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</head>
+
+
+<body>
+
+    <nav class="main-2">
+        <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <div class="d-flex justify-content-center"></div>
+                 <button class="nav-link active" id="cat-1-tab" data-bs-toggle="tab" data-bs-target="#cat-1" type="button" role="tab" aria-controls="cat-1" aria-selected="true">{{ Cat1 }}</button>
+                 <button class="nav-link" id="cat-2-tab" data-bs-toggle="tab" data-bs-target="#cat-2" type="button" role="tab" aria-controls="cat-2" aria-selected="false">{{ Cat2 }}</button>
+                 <button class="nav-link" id="cat-3-tab" data-bs-toggle="tab" data-bs-target="#cat-3" type="button" role="tab" aria-controls="cat-3" aria-selected="false">{{ Cat3 }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tab-content" id="nav-tab">
+      <div class="tab-pane fade show active" id="cat-1" role="tabpanel" aria-labelledby="cat-1-tab" tabindex="0">
+        <div class="main-20">
+            {% for ct1 in range(0, Sz1, 2) %}
+                <div class="main-5">
+                    <h4 class="main-6">{{Title1[ct1][0]}}</h4>
+                    <h4 class="main-12">{{Title1[ct1][1]}}</h4>
+                    <h5><a class="main-11" target='_blank' href="{{Title1[ct1][2]}}">Click for details!</a></h5>
+                </div >
+           {% endfor %}
+        </div>
+
+        <div class="main-21">
+            {% for ct1 in range(1, Sz1, 2) %}
+                <div class="main-5">
+                    <h4 class="main-6">{{Title1[ct1][0]}}</h4>
+                    <h4 class="main-12">{{Title1[ct1][1]}}</h4>
+                    <div class="d-flex justify-content-end">
+                        <h5><a class="main-11" target='_blank' href="{{Title1[ct1][2]}}">Click for details!</a></h5>
+                    </div>
+                 </div>
+           {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="cat-2" role="tabpanel" aria-labelledby="cat-2-tab" tabindex="1">
+        <div class="main-22">
+            {% for ct1 in range(0, Sz2, 2) %}
+                <div class="main-5">
+                    <h4 class="main-6">{{Title2[ct1][0]}}</h4>
+                    <h4 class="main-12">{{Title2[ct1][1]}}</h4>
+                        <h5><a class="main-11" target='_blank' href="{{Title2[ct1][2]}}">Click for details!</a></h5>
+                </div>
+           {% endfor %}
+        </div>
+
+        <div class="main-23">
+            {% for ct1 in range(1, Sz2, 2) %}
+                <div class="main-5">
+                    <h4 class="main-6">{{Title2[ct1][0]}}</h4>
+                    <h4 class="main-12">{{Title2[ct1][1]}}</h4>
+                        <div class="d-flex justify-content-end">
+                            <h5><a class="main-11" target='_blank' href="{{Title2[ct1][2]}}">Click for details!</a></h5>
+                        </div>
+                     </div>
+           {% endfor %}
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="cat-3" role="tabpanel" aria-labelledby="cat-3-tab" tabindex="3">
+        <div class="main-24">
+            {% for ct1 in range(0, Sz3, 2) %}
+                <div class="main-5">
+                    <h4 class="main-6">{{Title3[ct1][0]}}</h4>
+                    <h4 class="main-12">{{Title3[ct1][1]}}</h4>
+                    <h5><a class="main-11" target='_blank' href="{{Title3[ct1][2]}}">Click for details!</a></h5>
+                </div>
+           {% endfor %}
+        </div>
+
+        <div class="main-25">
+            {% for ct1 in range(1, Sz3, 2) %}
+                <div class="main-5">
+                    <h4 class="main-6">{{Title3[ct1][0]}}</h4>
+                    <h4 class="main-12">{{Title3[ct1][1]}}</h4>
+                    <div class="d-flex justify-content-end">
+                        <h5><a class="main-11" target='_blank' href="{{Title3[ct1][2]}}">Click for details!</a></h5>
+                    </div>
+                   </div>
+           {% endfor %}
+        </div>
+    </div>
+
+    <div class="">
+    </div>
+
+    <script src="{{url_for('static', filename='/js/bootstrap.bundle.js')}}"></script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<link>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible">
+    <title>BB Choice Wizard</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap-utilities.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='test.css')}}">
+
+    <nav class="navbar navbar-expand-lg bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-blue" href="#">Project BlueBook</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</head>
+<body>
+
+    <div class="tab-content main-1" id="profile_update">
+            <div class="row justify-content-center">
+                <h3 class="row justify-content-center">Enter user interest areas</h3>
+                <div class="col-md-4">
+                    <form id="form2" name="form2" method="POST" action="choice">
+                        <label for="cat-1" class="form-label my-3">Select category-1</label>
+                        <select name="cat-1" id="cat-1" class="form-select" aria-label="Default select example">
+                                <option selected>Select option</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="business">Business</option>
+                                <option value="sports">Sports</option>
+                                <option value="health">Health</option>
+                                <option value="science">Science</option>
+                                <option value="technology">Technology</option>
+                        </select>
+
+                        <label for="cat-2" class="form-label my-3">Select category-2</label>
+                        <select name="cat-2" id="cat-2" class="form-select" aria-label="Default select example">
+                                <option value="entertainment">Entertainment</option>
+                                <option value="business">Business</option>
+                                <option value="sports">Sports</option>
+                                <option value="health">Health</option>
+                                <option value="science">Science</option>
+                                <option value="technology">Technology</option>
+                        </select>
+                        <label for="cat-3" class="form-label my-3">Select category-3</label>
+                        <select name="cat-3" id="cat-3" class="form-select" aria-label="Default select example">
+                                <option value="entertainment">Entertainment</option>
+                                <option value="business">Business</option>
+                                <option value="sports">Sports</option>
+                                <option value="health">Health</option>
+                                <option value="science">Science</option>
+                                <option value="technology">Technology</option>
+                        </select>
+                        <label for="newslmt" class="form-label my-3">No. of news per interest</label>
+                        <select name="newslmt" id="newslmt" class="form-select" aria-label="Default select example">
+                                <option selected>{{ news_lmt }}</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                        </select>
+                        <div class="text-center my-3 row-cols-4">
+                            <button name="submit2" type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+        </div>
+
+    </div>
+
+    <script src="{{url_for('static', filename='/js/bootstrap.bundle.js')}}"></script>
+
+</body>
+</html>

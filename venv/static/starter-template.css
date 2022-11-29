@@ -1,0 +1,15 @@
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+html {
+   min-height: 100%;
+   background-image: url('project-blue-book-s2-1920x1080-all-shows.jpg');
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-position: center center;
+}
