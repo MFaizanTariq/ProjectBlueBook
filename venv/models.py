@@ -23,6 +23,7 @@ class User(db.Model):
     cat_2 = db.Column(db.String(15), nullable=False)
     cat_3 = db.Column(db.String(15), nullable=False)
     u_act = db.relationship('User_Activity', backref=db.backref('user'))
+    u_msg = db.relationship('User_Message', backref=db.backref('user'))
 
     def Add_User(uname, fullname, firstname, lastname, email, password, location, nw_per_page, cat_1, cat_2, cat_3):
         new_user = User(uname=uname, fullname=fullname, firstname=firstname, lastname=lastname, email=email, 
@@ -108,6 +109,25 @@ class User_Activity(db.Model):
         nw_act = User_Activity(u_id=u_id, act_dt=act_dt, det=det)
         db.session.add(nw_act)
         db.session.commit()
+
+class User_Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    u_rec = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    u_send = db.Column(db.Integer, nullable=False)
+    msg_tp = db.Column(db.Integer, nullable=False)
+    msg_res = db.Column(db.Integer, nullable=False)
+    msg = db.Column(db.String(100), nullable=False)
+
+    def User_Add_Msg(u_rec, u_send, msg_tp, msg_res, msg):
+        new_msg = User_Message(u_rec=u_rec, u_send=u_send, msg_tp = msg_tp, msg_res = msg_res, msg = msg)
+        db.session.add(new_msg)
+        db.session.commit()
+        return
+
+    def User_Pen_Req(u_id):
+        u_reqs= db.session.query(User_Message).filter(User_Message.u_id == u_id, User_Message.msg_tp == 1,
+                                                User_Message.msg_res == 0)
+        return u_reqs
 
 
 if not path.exists('instance/' + DB_NAME):

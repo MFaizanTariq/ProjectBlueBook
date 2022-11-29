@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'ProjectBlueBook'
 app.register_blueprint(views, url_prefix='/')
 app.register_blueprint(auths, url_prefix='/')
 
-from venv.models import User, Nw_Data, User_Activity
+from venv.models import User, Nw_Data, User_Activity, User_Message
 
 def User_Pre_Req(uname, email):
     msg_uname = 'Username aready exists'
@@ -63,4 +63,11 @@ def User_News(country, cat_1):
 def User_Act_Add(u_id, det):
     act_dt = datetime.datetime.now(pytz.timezone('America/Montreal'))
     User_Activity.Add_Activity(u_id, act_dt, det)
+    return
+
+def Send_Fr_Req(u_rec, u_send):
+    msg = 'Please add me as a Friend'
+    msg_tp = 1
+    msg_res = 0
+    User_Message.User_Add_Msg(u_rec,u_send, msg_tp, msg_res, msg)
     return

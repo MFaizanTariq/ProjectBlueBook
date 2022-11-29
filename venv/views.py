@@ -123,6 +123,19 @@ def profile_update2():
     return render_template('profile_update.html', username=user_data[0], email=user_data[4], firstname=user_data[2],
                 lastname=user_data[3], country=user_data[5], cat1=user_data[6], cat2=user_data[7], cat3=user_data[8])
 
+@views.route('/send_fr_req', methods=['GET', 'POST'])
+def send_fr_req():
+    from venv.controller import User_Act_Add, Send_Fr_Req
+    u_send = session["u_id"]
+    u_rec = int(request.form["u_rec"])
+
+    if request.method == 'POST':
+        msg='Friend request sent'
+        Send_Fr_Req(u_rec, u_send)
+        return render_template('profile_update.html', message=msg)
+
+    return redirect(url_for("views.profile_update"))
+
 
 @views.route("/logout")
 def logout():
