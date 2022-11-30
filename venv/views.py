@@ -131,8 +131,6 @@ def send_fr_req():
     from venv.controller import User_Act_Add, Send_Fr_Req
     u_send = session["u_id"]
     u_rec = int(request.form["u_fr"])
-    print(u_rec)
-    input()
     if request.method == 'POST':
         msg='Friend request sent'
         Send_Fr_Req(u_rec, u_send)
