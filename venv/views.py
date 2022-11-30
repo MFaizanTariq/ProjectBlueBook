@@ -130,49 +130,33 @@ def profile_update2():
 def send_fr_req():
     from venv.controller import User_Act_Add, Send_Fr_Req
     u_send = session["u_id"]
-    u_rec = int(request.form["u_rec"])
-
+    u_rec = int(request.form["u_fr"])
+    print(u_rec)
+    input()
     if request.method == 'POST':
         msg='Friend request sent'
         Send_Fr_Req(u_rec, u_send)
         User_Act_Add(u_send, msg)
-        return render_template('profile_update.html', message=msg)
+        return render_template('messages.html', message=msg)
 
-    return redirect(url_for("views.profile_update"))
+    return redirect(url_for("views.messages"))
 
-
-@views.route('/decide_req', methods=['GET', 'POST'])
-def decide_req():
-    from venv.controller import Decide_Fr_Req, User_Act_Add
-    u_id = session["u_id"]
-
-    if request.method == 'POST':
-        msg_id = int(request.form['fr_id'])
-        u_dec = int(request.form['decision'])
-        print(msg_id,u_dec)
-        input()
-        if u_dec == 1:
-            Decide_Fr_Req(msg_id, u_dec)
-            msg = "Accepted Friend Request"
-            User_Act_Add(u_id, msg)
-
-        else:
-            Decide_Fr_Req(msg_id, u_dec)
-            msg = "Rejected Friend Request"
-            User_Act_Add(u_id, msg)
-        return redirect(url_for("views.profile_update"))
-
-    return redirect(url_for("views.profile_update"))
 
 @views.route('/messages', methods=['GET', 'POST'])
 def messages():
-    from venv.controller import User_Data, Get_Fr_Req
+    from venv.controller import User_Data, Get_Fr_Req, Pr_User
     u_id = session["u_id"]
     user_data = User_Data(u_id)
     u_reqs = Get_Fr_Req(u_id)
-    Sz = len(u_reqs)
+    Sz1 = len(u_reqs)
+    s_reqs = Pr_User(u_id)
+    Sz2 = len(s_reqs)
 
-    return render_template('messages.html', sz=Sz, ureq=u_reqs)
+    if Sz2 > 5:
+        Sz2 = 5
+
+
+    return render_template('messages.html', Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs)
 
 @views.route('/accept_req', methods=['GET', 'POST'])
 def accept_req():
@@ -185,6 +169,7 @@ def accept_req():
         Decide_Fr_Req(msg_id, u_dec)
         msg = "Accepted Friend Request"
         User_Act_Add(u_id, msg)
+        return render_template('messages.html', message=msg)
 
     return redirect(url_for("views.messages"))
 
@@ -199,9 +184,9 @@ def reject_req():
         Decide_Fr_Req(msg_id, u_dec)
         msg = "Rejected Friend Request"
         User_Act_Add(u_id, msg)
+        return render_template('messages.html', message=msg)
 
     return redirect(url_for("views.messages"))
-
 
 
 @views.route("/logout")

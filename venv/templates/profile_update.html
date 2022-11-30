@@ -35,7 +35,6 @@
             <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Personal Details</button>
             <button class="nav-link" id="interests-tab" data-bs-toggle="tab" data-bs-target="#interests" type="button" role="tab" aria-controls="interests" aria-selected="false">News Interests</button>
             <button class="nav-link" id="friends-tab" data-bs-toggle="tab" data-bs-target="#friends" type="button" role="tab" aria-controls="friends" aria-selected="false">Send Friend Requests</button>
-            <button class="nav-link" id="message-tab" data-bs-toggle="tab" data-bs-target="#message" type="button" role="tab" aria-controls="message" aria-selected="false">Check Friend Requests</button>
         </div>
     </nav>
 
@@ -140,32 +139,6 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane main-1" id="message" role="tabpanel" aria-labelledby="message-tab" tabindex="4">
-            <div class="row justify-content-center my-3">
-                <div class="col-md-4">
-                    <form id="form4" name="form4" method="POST" action="decide_req">
-                        <label for="fr_id" class="form-label my-3">Username</label>
-                            <select name="fr_id" id="fr_id" class="form-select" aria-label="Default select example">
-                                {% if sz %}
-                                    {% for ct1 in range(0, sz) %}
-                                        <option value="{{ureq[ct1][2]}}">{{ureq[ct1][1]}}</option>
-                                    {% endfor %}
-                              {% endif %}
-                            </select>
-
-                        <label for="decision" class="form-label my-3">Decision</label>
-                        <select name="decision" id="decision" class="form-select" aria-label="Default select example">
-                                <option value="1">Accept</option>
-                                <option value="0">Reject</option>
-                           </select>
-                        <div class="text-center my-3 row-cols-4">
-                            <button name="submit2" type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
 
     </div>
 

@@ -82,6 +82,9 @@ class User(db.Model):
         db.session.query(User).filter(User.id == u_id).update({'firstname':firstname, 'lastname' : lastname, 'location' : location})
         db.session.commit()
         return
+    def All_Data():
+        u_datas = db.session.query(User).all()
+        return u_datas
 
 class Nw_Data(db.Model):
     id = db.Column(db.Integer, primary_key=True)

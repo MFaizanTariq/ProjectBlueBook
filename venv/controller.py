@@ -95,3 +95,34 @@ def Decide_Fr_Req(msg_id, u_dec):
     else:
         User_Message.Msg_Update(msg_id)
     return
+
+
+def Pr_User(u_id):
+    u_datas = User.All_Data()
+    dt = []
+    ur = []
+    for u_data in u_datas:
+        if u_data.id != u_id:
+            dt.append([u_data.id, u_data.location, u_data.cat_1, u_data.cat_2, u_data.cat_3,0,u_data.uname])
+        else:
+            ur.append([u_data.id, u_data.location, u_data.cat_1, u_data.cat_2, u_data.cat_3])
+    
+    sz = len(dt)
+
+    for x in range(sz):
+        frd_ind = 0
+        for y in range(1, 5):
+            print(dt[x][y])
+            if ur[0][1] == dt[x][y]:
+                frd_ind += 1
+            elif ur[0][2] == dt[x][y]:
+                frd_ind += 1
+            elif ur[0][3] == dt[x][y]:
+                frd_ind += 1
+            elif ur[0][4] == dt[x][y]:
+                frd_ind += 1
+        dt[x][5] = frd_ind
+    print(dt)
+    dt.sort(key=lambda tup:tup[5], reverse=True)
+    print(dt)
+    return dt
