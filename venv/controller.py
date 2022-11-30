@@ -101,14 +101,21 @@ def Pr_User(u_id):
     u_datas = User.All_Data()
     dt = []
     ur = []
+    fr_lt = []
+    nw_lt = []
+
     for u_data in u_datas:
         if u_data.id != u_id:
             dt.append([u_data.id, u_data.location, u_data.cat_1, u_data.cat_2, u_data.cat_3,0,u_data.uname])
+            nw_lt.append([u_data.id])
         else:
+            frs=u_data.u_fr
             ur.append([u_data.id, u_data.location, u_data.cat_1, u_data.cat_2, u_data.cat_3])
-    
-    sz = len(dt)
 
+    for fr in frs:
+        fr_lt.append([fr.u_fr])
+    sz = len(dt)
+    sz2 = len(fr_lt)
     for x in range(sz):
         frd_ind = 0
         for y in range(1, 5):
@@ -124,5 +131,12 @@ def Pr_User(u_id):
         dt[x][5] = frd_ind
     print(dt)
     dt.sort(key=lambda tup:tup[5], reverse=True)
+    print(dt)
+    
+    for x in range(sz):
+        for y in range(sz2):
+            if nw_lt[x]==fr_lt[y]:
+                dt[x][0]=0
+                break
     print(dt)
     return dt

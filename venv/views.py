@@ -57,8 +57,7 @@ def main_page():
     u_id = session["u_id"]
     user_data = User_Data(u_id)
     User_Act_Add(u_id,'Successful Login')
-    D = dict()
-
+    
     nw1 = User_News(user_data[5], user_data[6])
     nw1.reverse()
 
@@ -152,7 +151,6 @@ def messages():
 
     if Sz2 > 5:
         Sz2 = 5
-
 
     return render_template('messages.html', Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs)
 

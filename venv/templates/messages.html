@@ -45,11 +45,13 @@
                 <p class="row justify-content-center alert alert-success alert-dismissible">{{ message }}</p>
                 {% endif %}
                 {% if Sz2 %}
-                    {% for ct2 in range(0, Sz2) %}
+                {% for ct2 in range(0, Sz2) %}
+                {% if sreq[ct2][0] != 0 %}
                 <form id="form6" name="form6" method="POST" action="send_fr_req">
                     <input class="form-control" type="text" placeholder="{{sreq[ct2][6]}}" aria-label="Disabled input example" disabled>
                     <button name="u_fr" type="submit" value="{{sreq[ct2][0]}}" class="btn btn-primary my-1">Send Request</button>
                 </form>
+                {% endif  %}
                 {% endfor %}
                 {% endif %}
 
