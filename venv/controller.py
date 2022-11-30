@@ -18,6 +18,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'ProjectBlueBook'
 app.config['SCHEDULER_API_ENABLED'] = 'True'
+app.config['SQLACHEMY_DATABASE_URI'] = 'postgres://adffdgsrywxhsa:d483d23a6d3ac240757343c3b1ab826b05e8211a219306a9b271da8b964ee6f7@ec2-54-174-31-7.compute-1.amazonaws.com:5432/ddi35hde1c4juj'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
