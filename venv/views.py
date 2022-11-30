@@ -164,6 +164,45 @@ def decide_req():
 
     return redirect(url_for("views.profile_update"))
 
+@views.route('/messages', methods=['GET', 'POST'])
+def messages():
+    from venv.controller import User_Data, Get_Fr_Req
+    u_id = session["u_id"]
+    user_data = User_Data(u_id)
+    u_reqs = Get_Fr_Req(u_id)
+    Sz = len(u_reqs)
+
+    return render_template('messages.html', sz=Sz, ureq=u_reqs)
+
+@views.route('/accept_req', methods=['GET', 'POST'])
+def accept_req():
+    from venv.controller import Decide_Fr_Req, User_Act_Add
+    u_id = session["u_id"]
+
+    if request.method == 'POST':
+        msg_id = int(request.form['decision'])
+        u_dec = 1
+        Decide_Fr_Req(msg_id, u_dec)
+        msg = "Accepted Friend Request"
+        User_Act_Add(u_id, msg)
+
+    return redirect(url_for("views.messages"))
+
+@views.route('/reject_req', methods=['GET', 'POST'])
+def reject_req():
+    from venv.controller import Decide_Fr_Req, User_Act_Add
+    u_id = session["u_id"]
+
+    if request.method == 'POST':
+        msg_id = int(request.form['decision'])
+        u_dec = 0
+        Decide_Fr_Req(msg_id, u_dec)
+        msg = "Rejected Friend Request"
+        User_Act_Add(u_id, msg)
+
+    return redirect(url_for("views.messages"))
+
+
 
 @views.route("/logout")
 def logout():
