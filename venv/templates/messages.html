@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<link>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible">
+    <title>Profile Update</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap-utilities.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='test.css')}}">
+
+    <nav class="navbar navbar-expand-lg bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-blue" href="#">Project BlueBook</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <a class="nav-link active text-white" aria-current="page" href="{{ url_for('views.main_page') }}">Main Page</a>
+                    <a class="nav-link text-white" href="{{ url_for('views.profile_update') }}">Profile</a>
+                    <a class="nav-link text-white" href="{{ url_for('views.logout') }}">Log Out</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</head>
+<body>
+
+    <nav class="main-2">
+        <div class="nav nav-tabs" id="messages2" role="tablist">
+            <button class="nav-link active" id="send-req2" data-bs-toggle="tab" data-bs-target="#send-req2" type="button" role="tab" aria-controls="send-req2" aria-selected="false">Send Friend Requests</button>
+            <button class="nav-link" id="rec-req2-tab" data-bs-toggle="tab" data-bs-target="#rec-req2" type="button" role="tab" aria-controls="rec-req2" aria-selected="false">Check Friend Requests</button>
+        </div>
+    </nav>
+
+    <div class="tab-content" id="messages2">
+
+        <div class="tab-pane main-1 active" id="send-req2" role="tabpanel" aria-labelledby="send-req2-tab" tabindex="10">
+            <div class="row justify-content-center my-3">
+                {% if message %}
+                <p class="row justify-content-center alert alert-success alert-dismissible">{{ message }}</p>
+                {% endif %}
+                <div class="col-md-4">
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane main-8" id="rec-req2" role="tabpanel" aria-labelledby="rec-req2-tab" tabindex="11">
+                <div class="col-md-2 container my-3">
+                    {% if sz %}
+                        {% for ct1 in range(0, sz) %}
+                             <form id="form5" name="form5" method="POST" action="accept_req">
+                                 <input class="form-control" type="text" placeholder="{{ureq[ct1][1]}}" aria-label="Disabled input example" disabled>
+                                 <button name="decision" type="submit" value="{{ureq[ct1][2]}}" class="btn btn-primary my-1">Accept</button>
+                             </form>
+
+                             <form id="form6" name="form6" method="POST" action="reject_req">
+                                 <button name="decision" type="submit" value="{{ureq[ct1][2]}}" class="btn btn-primary my-1">Reject</button>
+                             </form>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+        </div>
+
+
+    </div>
+
+    <script src="{{url_for('static', filename='/js/bootstrap.bundle.js')}}"></script>
+
+</body>
+</html>
