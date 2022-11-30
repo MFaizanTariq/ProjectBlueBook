@@ -11,6 +11,7 @@ import pathlib
 import requests
 
 auths = Blueprint('auths', __name__)
+
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 google_client_id = "405655166380-bjg80tlbb6ua61hc2mha2a7l5ar3g5qb.apps.googleusercontent.com"
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
@@ -106,6 +107,56 @@ def protected_area():
     return render_template('signup.html', form=form)
 
 
-@auths.route('/facebook')
+@auths.route('/signup_facebook')
 def signup_facebook():
-    pass
+    from venv.controller import oauth
+
+    oauth.register(
+        name='facebook',
+        client_id='628408715694502',
+        client_secret='9e64fe0d94db22cb7517074b7bc38c0d',
+        access_token_url='https://graph.facebook.com/oauth/access_token',
+        access_token_params=None,
+        authorize_url='https://www.facebook.com/dialog/oauth',
+        authorize_params=None,
+        api_base_url='https://graph.facebook.com/',
+        client_kwargs={'scope': 'email'},
+    )
+    redirect_uri = url_for('auths.facebook_auth', _external=True)
+    return oauth.facebook.authorize_redirect(redirect_uri)
+
+@auths.route('/facebook/auth/')
+def facebook_auth():
+    token = oauth.facebook.authorize_access_token()
+
+    resp = oauth.facebook.get(
+        'https://graph.facebook.com/me?fields=id,name,email,picture{url}')
+    profile = resp.json()
+
+    session["name"] = profile['name']
+    session["email"] = profile['email']
+
+    return redirect("/protected_area2")
+
+@auths.route("/protected_area2", methods=['GET', 'POST'])
+def protected_area2():
+    from venv.controller import User_Pre_Req, Add_Def_User
+    form = RegisterForm()
+    if request.method == "POST":
+        uname = form.username.data
+        fullname = session["name"]
+        email = session["email"]
+        firstname = form.firstname.data
+        lastname = form.lastname.data
+        password = form.password.data
+        location = form.location.data
+        msg = User_Pre_Req(uname, email)
+        if msg == " ":
+            Add_Def_User(uname, fullname, firstname, lastname, email, password, location)
+            session["uname"] = uname
+            session["password"] = password
+            return redirect(url_for("views.choice"))
+        else:
+            return render_template('signup2.html', form=form, message=msg)
+
+    return render_template('signup2.html', form=form)

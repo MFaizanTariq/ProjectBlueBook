@@ -1,15 +1,37 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from authlib.integrations.flask_client import OAuth
 from venv.views import views
 from venv.auths import auths
+from venv.keys import key1, key2, key3, key4, key5,key6, key7, key8, key9, key10, key11, key12
+from venv.keys import key13, key14, key15, key16, key17, key18, key19, key20, key21, key22, key23
+from flask_mail import Mail
+from pytrends.request import TrendReq
+from newsapi import NewsApiClient
+from flask_apscheduler import APScheduler
+import pandas as pd
 import datetime
 import pytz
 
+
 app = Flask(__name__)
-Bootstrap(app)
+
 app.config['SECRET_KEY'] = 'ProjectBlueBook'
+app.config['SCHEDULER_API_ENABLED'] = 'True'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = False
+
 app.register_blueprint(views, url_prefix='/')
 app.register_blueprint(auths, url_prefix='/')
+
+
+Bootstrap(app)
+oauth = OAuth(app)
+mail = Mail(app)
+scheduler = APScheduler()
+scheduler.init_app(app)
 
 from venv.models import User, Nw_Data, User_Activity, User_Message, User_Fr_List
 
@@ -114,6 +136,7 @@ def Pr_User(u_id):
 
     for fr in frs:
         fr_lt.append([fr.u_fr])
+
     sz = len(dt)
     sz2 = len(fr_lt)
     for x in range(sz):
@@ -138,5 +161,87 @@ def Pr_User(u_id):
             if nw_lt[x]==fr_lt[y]:
                 dt[x][0]=0
                 break
+
     print(dt)
     return dt
+
+
+def news_fetch1(cat, loc, key):
+    nw_dt = datetime.datetime.now()
+    nw_dt = nw_dt.date()
+
+    newsapi = NewsApiClient(api_key=key)
+
+    pytrend = TrendReq()
+    tr_keys = pytrend.trending_searches(loc)
+    x1 = len(tr_keys)
+
+    for x in range(x1):
+        kw4 = tr_keys.iloc[x, 0]
+        print(kw4)
+        nw_key = newsapi.get_top_headlines(q=kw4, category=cat, language='en')
+        nw_art = nw_key['articles']
+        nw_art_sz = len(nw_art)
+        if nw_art_sz != 0:
+            for i in range(nw_art_sz):
+                nw_t = nw_art[i]['title']
+                nw_desc = nw_art[i]['description']
+                nw_link = nw_art[i]['url']
+                print(nw_t)
+                print(nw_desc)
+                print(nw_link)
+                if nw_desc:
+                    if nw_link:
+                        with app.app_context():
+                            Nw_Data.Add_News(cat, loc, nw_dt, nw_t, nw_desc, nw_link)
+                        print('added')
+
+  
+    print('Successfully updated NEWS database with country: ', loc, ' and category: ', cat)
+
+@scheduler.task('cron', id='1', hour='18', minute='03')
+def news_fetch():
+    news_fetch1('entertainment', 'australia', key9)
+    news_fetch1('business', 'australia', key1)
+    news_fetch1('sports', 'australia', key1)
+    news_fetch1('health', 'australia', key1)
+    news_fetch1('science', 'australia', key2)
+    news_fetch1('technology', 'australia', key2)
+    news_fetch1('entertainment', 'canada', key2)
+    news_fetch1('business', 'canada', key2)
+    news_fetch1('sports', 'canada', key2)
+    news_fetch1('health', 'canada', key3)
+    news_fetch1('technology', 'canada', key3)
+    news_fetch1('science', 'canada', key3)
+    news_fetch1('entertainment', 'india', key3)
+    news_fetch1('business', 'india', key3)
+    news_fetch1('sports', 'india', key4)
+    news_fetch1('health', 'india', key4)
+    news_fetch1('technology', 'india', key4)
+    news_fetch1('science', 'india', key4)
+    news_fetch1('entertainment', 'united_kingdom', key4)
+    news_fetch1('business', 'united_kingdom', key5)
+    news_fetch1('sports', 'united_kingdom', key5)
+    news_fetch1('health', 'united_kingdom', key5)
+    news_fetch1('technology', 'united_kingdom', key5)
+    news_fetch1('science', 'united_kingdom', key5)
+    news_fetch1('entertainment', 'united_states', key6)
+    news_fetch1('business', 'united_states', key6)
+    news_fetch1('sports', 'united_states', key6)
+    news_fetch1('health', 'united_states', key6)
+    news_fetch1('technology', 'united_states', key7)
+    news_fetch1('science', 'united_states', key7)
+    news_fetch1('entertainment', 'italy', key7)
+    news_fetch1('business', 'italy', key7)
+    news_fetch1('sports', 'italy', key7)
+    news_fetch1('health', 'italy', key8)
+    news_fetch1('technology', 'italy', key8)
+    news_fetch1('science', 'italy', key8)
+    news_fetch1('entertainment', 'germany', key8)
+    news_fetch1('business', 'germany', key8)
+    news_fetch1('sports', 'germany', key9)
+    news_fetch1('health', 'germany', key9)
+    news_fetch1('technology', 'germany', key9)
+    news_fetch1('science', 'germany', key9)
+
+scheduler.start()

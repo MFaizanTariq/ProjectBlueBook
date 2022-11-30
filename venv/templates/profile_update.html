@@ -34,7 +34,6 @@
         <div class="nav nav-tabs" id="profile_update" role="tablist">
             <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Personal Details</button>
             <button class="nav-link" id="interests-tab" data-bs-toggle="tab" data-bs-target="#interests" type="button" role="tab" aria-controls="interests" aria-selected="false">News Interests</button>
-            <button class="nav-link" id="friends-tab" data-bs-toggle="tab" data-bs-target="#friends" type="button" role="tab" aria-controls="friends" aria-selected="false">Send Friend Requests</button>
         </div>
     </nav>
 
@@ -116,26 +115,6 @@
                             <button name="submit2" type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-        <div class="tab-pane main-1" id="friends" role="tabpanel" aria-labelledby="friends-tab" tabindex="2">
-            <div class="row justify-content-center my-3">
-                <div class="col-md-4">
-                    <form id="form3" name="form3" method="POST" action="send_invite">
-                        <label for="email" class="form-label my-3">Email:</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="Mention email for invitation">
-                        <div class="text-center my-3 row-cols-4">
-                                <button name="Send email invite" type="submit" class="btn btn-primary">Send invite</button>
-                        </div>
-                    </form>
-                    <form id="form4" name="form4" method="POST" action="send_fr_req">
-                        <label for="friend_req" class="form-label my-3">Friend requests:</label>
-                        <div class="row">
-                        <input type="name" name="u_rec" id="u_rec" class="form-control" placeholder="">
-                        <button name="Send friend invitation" type="submit" class="btn btn-primary">Send request</button>
-                        </div>
-                     </form>
                 </div>
             </div>
         </div>

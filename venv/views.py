@@ -184,6 +184,26 @@ def reject_req():
 
     return redirect(url_for("views.messages"))
 
+@views.route('/send_invite', methods=['GET', 'POST'])
+def send_invite():
+    from venv.controller import app, mail
+    fr_mail = request.form['email']
+    email = session['email']
+    passwrd = request.form['pass']
+    app.config['MAIL_USERNAME'] = email
+    app.config['MAIL_PASSWORD'] = passwrd
+    mail = Mail(app)
+
+    if request.method == 'POST':
+        msg = Message("Project BlueBook invite", sender=email, recipients=[fr_mail])
+        msg.body = "Hey There, inviting you to the BlueBook web application @ bluebookcanada.herokuapp.com, JOIN TODAY!!!)"
+        mail.send(msg)
+        msg1='Invite email sent successfully'
+        return render_template('profile_update.html', message=msg1)
+
+    return redirect(url_for("views.profile_update"))
+
+
 
 @views.route("/logout")
 def logout():
