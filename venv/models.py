@@ -162,6 +162,10 @@ class User_Fr_List(db.Model):
         db.session.add(new_frd)
         db.session.commit()
         return
+    
+    def All_Fr_List():
+        all_frds = db.session.query(User_Fr_List).all()
+        return all_frds
 
 
 if not path.exists('instance/' + DB_NAME):

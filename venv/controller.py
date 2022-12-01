@@ -140,6 +140,14 @@ def Print_All_Msg():
         dt.append([all_msg.u_rec, all_msg.u_send,all_msg.msg_tp, all_msg.msg_res])
     return dt
 
+def Print_All_Frd():
+    all_frds = User_Fr_List.All_Fr_List()
+    dt = []
+    for all_frd in all_frds:
+        dt.append([all_frd.id, all_frd.u_id, all_frd.u_fr])
+    return dt
+
+
 def Pr_User(u_id):
     u_datas = User.All_Data()
     dt = []
