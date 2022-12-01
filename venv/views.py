@@ -14,6 +14,9 @@ class LoginForm(FlaskForm):
 
 @views.route('/')
 def index():
+    from venv.controller import Print_All_Msg
+    msg = Print_All_Msg()
+    print(msg)
     return render_template('index.html')
 
 @views.route('/login', methods=['GET', 'POST'])

@@ -133,6 +133,12 @@ def Decide_Fr_Req(msg_id, u_dec):
         User_Message.Msg_Update(msg_id)
     return
 
+def Print_All_Msg():
+    all_msgs = User_Message.Get_All_Msg()
+    dt = []
+    for all_msg in all_msgs:
+        dt.append([all_msg.u_rec, all_msg.u_send,all_msg.msg_tp, all_msg.msg_res])
+    return dt
 
 def Pr_User(u_id):
     u_datas = User.All_Data()

@@ -147,6 +147,10 @@ class User_Message(db.Model):
         db.session.query(User_Message).filter(User_Message.id == id).update({'msg_res' : msg_res})
         db.session.commit()
         return
+    def Get_All_Msg():
+        all_msgs= db.session.query(User_Message).all()
+        return all_msgs
+
 
 class User_Fr_List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
