@@ -67,7 +67,6 @@ def callback():
     return redirect("/protected_area")
 
 @auths.route("/protected_area", methods=['GET', 'POST'])
-# @login_is_required
 def protected_area():
     from venv.controller import User_Pre_Req, Add_Def_User
     credentials = flow.credentials
@@ -127,6 +126,7 @@ def signup_facebook():
 
 @auths.route('/facebook/auth/')
 def facebook_auth():
+    from venv.controller import oauth
     token = oauth.facebook.authorize_access_token()
 
     resp = oauth.facebook.get(
