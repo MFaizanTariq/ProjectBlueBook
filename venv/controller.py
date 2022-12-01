@@ -93,6 +93,16 @@ def User_Act_Add(u_id, det):
     User_Activity.Add_Activity(u_id, act_dt, det)
     return
 
+def User_Act_Get(u_id):
+    u_acts = User_Activity.Fetch_Activity(u_id)
+    dt = []
+    for u_act in u_acts:
+        dt.append([u_act.det, u_act.act_dt])
+    
+    dt.reverse()
+    return dt
+
+
 def Send_Fr_Req(u_rec, u_send):
     msg = 'Please add me as a Friend'
     msg_tp = 1
@@ -203,6 +213,7 @@ def news_fetch1(cat, loc, key):
 
   
     print('Successfully updated NEWS database with country: ', loc, ' and category: ', cat)
+
 
 @scheduler.task('cron', id='1', hour='18', minute='03')
 def news_fetch():

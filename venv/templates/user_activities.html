@@ -1,12 +1,11 @@
 <!doctype html>
-{% import "bootstrap/wtf.html" as wtf %}
 <html lang="en">
 <link>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible">
-    <title>BB Google SignUp</title>
+    <title>Profile Update</title>
     <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap-utilities.css')}}">
@@ -20,7 +19,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <a class="text-white" href="{{ url_for('views.index') }}">Home</a>
+                    <a class="nav-link active text-white" aria-current="page" href="{{ url_for('views.main_page') }}">Main Page</a>
+                    <a class="nav-link text-white" href="{{ url_for('views.profile_update') }}">Profile</a>
+                    <a class="nav-link text-white" href="{{ url_for('views.logout') }}">Log Out</a>
                 </ul>
             </div>
         </div>
@@ -28,17 +29,29 @@
 
 </head>
 <body>
-  <form class="form-signin main-7" method="POST" action="/protected_area">
-        {% if message %}
-             <p class="row justify-content-center alert alert-danger alert-dismissible">{{ message }}</p>
-        {% endif %}
-      <h3 class="form-signin-heading container">Welcome {{session["name"]}}, Please sign up </h3>
-      <p>{{ wtf.form_field(form.username)}}</p>
-      <p>{{ wtf.form_field(form.firstname)}}</p>
-      <p>{{ wtf.form_field(form.lastname)}}</p>
-      <p>{{ wtf.form_field(form.password)}}</p>
-      <p>{{ wtf.form_field(form.location)}}</p>
-      <button class="btn btn-lg btn-primary btn-block container" type="submit">Sign Up</button>
-  </form>
+            <table class="table main-9">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Activity</th>
+                        <th>Date and time</th>
+                        </tr>
+                        </thead>
+                        {% if sz %}
+                        {% for ct1 in range(sz) %}
+                        <tbody>
+                        <tr scope="row">
+                        <th>{{ct1+1}}</th>
+                        <td>{{uact[ct1][0]}}</td>
+                        <td>{{uact[ct1][1]}}</td>
+                        </tr>
+                        </tbody>
+                {% endfor %}
+            {% endif %}
+
+
+
+    <script src="{{url_for('static', filename='/js/bootstrap.bundle.js')}}"></script>
+
 </body>
 </html>

@@ -121,3 +121,22 @@
     left: 15%;
     width: 70%;
 }
+
+
+.main-9{
+    position: absolute;
+    background-color: #b6effb;
+
+    align-content: center;
+    top: 14%;
+    left: 15%;
+    width: 70%;
+}
+
+.main-14{
+    position: absolute;
+    align-content: center;
+    top: 70%;
+    left: 45%;
+    width: 10%;
+}

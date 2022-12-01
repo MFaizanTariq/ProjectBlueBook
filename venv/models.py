@@ -115,6 +115,10 @@ class User_Activity(db.Model):
         db.session.add(nw_act)
         db.session.commit()
 
+    def Fetch_Activity(u_id):
+        u_acts= db.session.query(User_Activity).filter(User_Activity.u_id == u_id)
+        return u_acts
+
 class User_Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     u_rec = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

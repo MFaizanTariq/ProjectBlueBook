@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 import datetime
+import string
 
 views = Blueprint('views', __name__)
 
@@ -66,9 +67,7 @@ def main_page():
 
     nw3 = User_News(user_data[5], user_data[8])
     nw3.reverse()
-
     nw_lmt = int(user_data[9])
-
     size_nw1 = len(nw1)
     if size_nw1 > nw_lmt:
         size_nw1 = nw_lmt
@@ -86,11 +85,14 @@ def main_page():
 
 @views.route("/profile", methods=['GET', 'POST'])
 def profile_update():
-    from venv.controller import User_Data, Cat_Update, User_Act_Add, Get_Fr_Req
+    from venv.controller import User_Data, Cat_Update, User_Act_Add, User_Act_Get
     u_id = session["u_id"]
     user_data = User_Data(u_id)
-    u_reqs = Get_Fr_Req(u_id)
-    Sz = len(u_reqs)
+    u_act = User_Act_Get(u_id)
+    Sz = len(u_act)
+    if Sz>10:
+        Sz=10
+
     if request.method == 'POST':
         cat1 = request.form['cat-1']
         cat2 = request.form['cat-2']
@@ -100,11 +102,11 @@ def profile_update():
         msg = 'Categories successfully updated'
         User_Act_Add(u_id,msg)
         return render_template('profile_update.html', username=user_data[0], email=user_data[4], firstname=user_data[2],
-                lastname=user_data[3], country=user_data[5], cat1=cat1, cat2=cat2, cat3=cat3, message=msg)
+                lastname=user_data[3], country=user_data[5], cat1=cat1, cat2=cat2, cat3=cat3, message=msg, sz=Sz, uact=u_act)
 
         
-    return render_template('profile_update.html', username=user_data[0], email=user_data[4], firstname=user_data[2],
-        lastname=user_data[3], country=user_data[5], cat1=user_data[6], cat2=user_data[7], cat3=user_data[8], sz=Sz, ureq=u_reqs)
+    return render_template('profile_update.html', username=user_data[0], email=user_data[4], firstname=user_data[2], lastname=user_data[3],
+        country=user_data[5], cat1=user_data[6], cat2=user_data[7], cat3=user_data[8], sz=Sz, uact=u_act)
 
 
 @views.route("/profile2", methods=['GET', 'POST'])
@@ -116,6 +118,7 @@ def profile_update2():
         nw_firstname = request.form['firstname']
         nw_lastname = request.form['lastname']
         nw_country = request.form['country']
+        nw_country = nw_country.lower()
         User_Update(u_id, nw_firstname, nw_lastname, nw_country)
         msg = 'User details successfully updated!!!'
         User_Act_Add(u_id, msg)
@@ -203,6 +206,14 @@ def send_invite():
 
     return redirect(url_for("views.profile_update"))
 
+@views.route("/user_activities", methods=['GET', 'POST'])
+def user_activities():
+    from venv.controller import User_Act_Get
+    u_id = session["u_id"]
+    u_act = User_Act_Get(u_id)
+    Sz = len(u_act)
+
+    return render_template('user_activities.html', sz=Sz, uact=u_act)
 
 
 @views.route("/logout")

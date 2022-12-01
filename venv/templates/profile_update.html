@@ -34,6 +34,7 @@
         <div class="nav nav-tabs" id="profile_update" role="tablist">
             <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Personal Details</button>
             <button class="nav-link" id="interests-tab" data-bs-toggle="tab" data-bs-target="#interests" type="button" role="tab" aria-controls="interests" aria-selected="false">News Interests</button>
+            <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab" aria-controls="logs" aria-selected="false">User Logs</button>
         </div>
     </nav>
 
@@ -104,7 +105,7 @@
                                 </select>
                         <label for="newslmt" class="form-label my-3">No. of news per interest</label>
                         <select name="newslmt" id="newslmt" class="form-select" aria-label="Default select example">
-                                <option selected>{{ news_lmt }}</option>
+                                <option selected>10</option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
                                 <option value="30">30</option>
@@ -118,7 +119,34 @@
                 </div>
             </div>
         </div>
+        <div class="tab-pane" id="logs" role="tabpanel" aria-labelledby="logs-tab" tabindex="1">
+            <div class="row justify-content-center my-3">
+            <table class="table main-9">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Activity</th>
+                        <th>Date and time</th>
+                        </tr>
+                        </thead>
+                        {% if sz %}
+                        {% for ct1 in range(sz) %}
+                        <tbody>
+                        <tr scope="row">
+                        <th>{{ct1+1}}</th>
+                        <td>{{uact[ct1][0]}}</td>
+                        <td>{{uact[ct1][1]}}</td>
+                        </tr>
+                        </tbody>
+                {% endfor %}
+            {% endif %}
+           </table>
+  <div class="main-14">
+      <button onclick="location.href ='{{ url_for('views.user_activities') }}';" class="btn btn-lg btn-primary btn-block container col-sm my-3">All activities</button>
+    </div>
 
+             </div>
+        </div>
     </div>
 
     <script src="{{url_for('static', filename='/js/bootstrap.bundle.js')}}"></script>

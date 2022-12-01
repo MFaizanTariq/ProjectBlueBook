@@ -95,6 +95,7 @@ def protected_area():
         lastname = form.lastname.data
         password = form.password.data
         location = form.location.data
+        location = location.lower()
         msg = User_Pre_Req(uname, email)
         if msg == " ":
             Add_Def_User(uname, fullname, firstname, lastname, email, password, location)
@@ -150,6 +151,7 @@ def protected_area2():
         lastname = form.lastname.data
         password = form.password.data
         location = form.location.data
+        location = location.lower()
         msg = User_Pre_Req(uname, email)
         if msg == " ":
             Add_Def_User(uname, fullname, firstname, lastname, email, password, location)
