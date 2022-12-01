@@ -18,6 +18,8 @@ def index():
     from venv.controller import Print_All_Frd, Print_All_Msg
     msg = Print_All_Msg()
     frd = Print_All_Frd()
+    print(msg)
+    print(frd)
     return render_template('index.html')
 
 
