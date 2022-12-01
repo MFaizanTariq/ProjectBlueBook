@@ -40,8 +40,8 @@
     <div class="tab-content" id="messages2">
 
         <div class="tab-pane main-8 active" id="send-req2" role="tabpanel" aria-labelledby="send-req2-tab" tabindex="10">
-            <div class="row justify-content-center my-3">
-                <div class="justify-content-center my-3">
+            <div class="justify-content-center my-3">
+                <div>
                 {% if message %}
                 <p class="row justify-content-center alert alert-success alert-dismissible">{{ message }}</p>
                 {% endif %}
@@ -50,22 +50,24 @@
                 {% for ct2 in range(0, Sz2) %}
                 {% if sreq[ct2][0] != 0 %}
                 <form id="form6" name="form6" method="POST" action="send_fr_req">
-                    <input class="form-control" type="text" placeholder="{{sreq[ct2][6]}}" aria-label="Disabled input example" disabled>
-                    <button name="u_fr" type="submit" value="{{sreq[ct2][0]}}" class="btn btn-primary my-1">Send Request</button>
+                    <input class="form-control text-center" type="text" placeholder="{{sreq[ct2][6]}}" aria-label="Disabled input example" disabled>
+                    <div class="text-center">
+                        <button name="u_fr" type="submit" value="{{sreq[ct2][0]}}" class="btn btn-sm btn-primary my-1">Send Request</button>
+                    </div>
                 </form>
                 {% endif  %}
                 {% endfor %}
                 {% endif %}
                 </div>
-                <div class="col-md-4">
+                <div>
                     <form id="form7" name="form7" method="POST" action="send_invite">
                         <label for="email" class="form-label my-3">Email:</label>
                         <input type="email" name="email" id="email" class="form-control" placeholder="Mention email for invitation">
                         <label for="password" class="form-label my-3">Password of your registered email:</label>
                         <input type="password" name="pass" id="pass" class="form-control" placeholder="Enter password">
 
-                        <div class="text-center my-3 row-cols-4">
-                                <button name="Send email invite" type="submit" class="btn btn-primary">Send invite</button>
+                        <div class="text-center my-3">
+                                <button name="Send email invite" type="submit" class="btn btn-sm btn-primary">Send invite</button>
                         </div>
                      </form>
                 </div>
@@ -74,21 +76,24 @@
         </div>
 
         <div class="tab-pane main-8" id="rec-req2" role="tabpanel" aria-labelledby="rec-req2-tab" tabindex="11">
-                <div class="col-md-2 container my-3">
-                    {% if Sz1 %}
-                        {% for ct1 in range(0, Sz1) %}
-                             <form id="form5" name="form5" method="POST" action="accept_req">
-                                 <input class="form-control" type="text" placeholder="{{ureq[ct1][1]}}" aria-label="Disabled input example" disabled>
-                                 <button name="decision" type="submit" value="{{ureq[ct1][2]}}" class="btn btn-primary my-1">Accept</button>
-                             </form>
-
-                             <form id="form6" name="form6" method="POST" action="reject_req">
-                                 <button name="decision" type="submit" value="{{ureq[ct1][2]}}" class="btn btn-primary my-1">Reject</button>
-                             </form>
-                        {% endfor %}
-                    {% endif %}
+            {% if Sz1 %}
+            {% for ct1 in range(0, Sz1) %}
+            <form id="form5" name="form5" method="POST" action="accept_req">
+                <input class="form-control text-center" type="text" placeholder="{{ureq[ct1][1]}}" aria-label="Disabled input example" disabled>
+                <div class="text-center">
+                    <button name="decision" type="submit" value="{{ureq[ct1][2]}}" class="btn btn-sm btn-primary my-1">Accept</button>
                 </div>
+            </form>
+            <form id="form6" name="form6" method="POST" action="reject_req">
+                <div class="text-center">
+                    <button name="decision" type="submit" value="{{ureq[ct1][2]}}" class="btn btn-sm btn-primary my-1 ">Reject</button>
+                </div>
+            </form>
         </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    </div>
 
 
     </div>

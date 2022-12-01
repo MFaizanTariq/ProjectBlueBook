@@ -14,12 +14,14 @@ auths = Blueprint('auths', __name__)
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 google_client_id = "34999991030-aqbafnvun525nhodv9kjsl1b33n7do92.apps.googleusercontent.com"
+
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
     redirect_uri="https://bluebookcanada.herokuapp.com/callback"
+
 )
 
 class RegisterForm(FlaskForm):
