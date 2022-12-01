@@ -12,7 +12,7 @@ from flask_apscheduler import APScheduler
 import pandas as pd
 import datetime
 import pytz
-import sqlite3
+
 
 app = Flask(__name__)
 
@@ -35,10 +35,7 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 
 from venv.models import User, Nw_Data, User_Activity, User_Message, User_Fr_List
-nw_db = sqlite3.connect("new_db.db")
-db_cur = nw_db.cursor()
-nw_dt = datetime.datetime.now()
-nw_dt = nw_dt.date()
+
 
 def User_Pre_Req(uname, email):
     msg_uname = 'Username aready exists'
