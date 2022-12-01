@@ -180,14 +180,17 @@ def Pr_User(u_id):
                 frd_ind += 1
         dt[x][5] = frd_ind
     print(dt)
-    dt.sort(key=lambda tup:tup[5], reverse=True)
-    print(dt)
-    
+
     for x in range(sz):
         for y in range(sz2):
             if nw_lt[x]==fr_lt[y]:
                 dt[x][0]=0
                 break
+
+
+    dt.sort(key=lambda tup:tup[5], reverse=True)
+    print(dt)
+    
 
     print(dt)
     return dt
