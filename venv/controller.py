@@ -128,6 +128,7 @@ def Decide_Fr_Req(msg_id, u_dec):
     u_fr = msg_data.u_send
     if u_dec == 1:
         User_Fr_List.User_Add_Fr(u_id, u_fr)
+        User_Fr_List.User_Add_Fr(u_fr, u_id)
         User_Message.Msg_Update(msg_id)
     else:
         User_Message.Msg_Update(msg_id)
