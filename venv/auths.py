@@ -21,7 +21,6 @@ flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
     redirect_uri="https://bluebookcanada.herokuapp.com/callback"
-
 )
 
 class RegisterForm(FlaskForm):

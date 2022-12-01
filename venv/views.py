@@ -12,6 +12,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired()])
     remember = BooleanField('Remember me')
 
+
 @views.route('/')
 def index():
     return render_template('index.html')
