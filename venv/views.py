@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from flask_wtf import FlaskForm
+from flask_mail import Mail, Message
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 import datetime
@@ -15,17 +16,12 @@ class LoginForm(FlaskForm):
 
 @views.route('/')
 def index():
-    from venv.controller import Print_All_Frd, Print_All_Msg
-    msg = Print_All_Msg()
-    frd = Print_All_Frd()
-    print(msg)
-    print(frd)
     return render_template('index.html')
 
 
 @views.route('/login', methods=['GET', 'POST'])
 def login():
-    from venv.controller import Validate_User
+    from venv.controller import Validate_User, User_Act_Add
     form = LoginForm()
     if request.method == "POST":
         uname = form.username.data
@@ -34,6 +30,7 @@ def login():
         print(u_id)
         if not u_id == 0:
             session["u_id"] = u_id
+            User_Act_Add(u_id, 'Successful Login')
             return redirect(url_for("views.main_page"))
         else:
             print("Incorrect credentials")
@@ -61,19 +58,29 @@ def choice():
 
 @views.route("/main_page", methods=['GET', 'POST'])
 def main_page():
-    from venv.controller import User_News, User_Data, User_Act_Add
+    from venv.controller import User_News, User_Data, User_Act_Add, Fetch_Recomm_List,Fetch_Watch_List
     u_id = session["u_id"]
     user_data = User_Data(u_id)
-    User_Act_Add(u_id,'Successful Login')
+    User_Act_Add(u_id,'Accessed news feed')
+    session["email"] = user_data[4]
     
+    nw4 = Fetch_Watch_List(u_id)
+    nw4.reverse()
+    size_nw4 = len(nw4)
+
+    nw5 = Fetch_Recomm_List(u_id)
+    size_nw5 = len(nw5)
+    nw5.reverse()
+
     nw1 = User_News(user_data[5], user_data[6])
     nw1.reverse()
-
+ 
     nw2 = User_News(user_data[5], user_data[7])
     nw2.reverse()
 
     nw3 = User_News(user_data[5], user_data[8])
     nw3.reverse()
+
     nw_lmt = int(user_data[9])
     size_nw1 = len(nw1)
     if size_nw1 > nw_lmt:
@@ -86,8 +93,48 @@ def main_page():
         size_nw3 = nw_lmt
 
 
-    return render_template('main_page.html', Title1=nw1, Sz1=size_nw1, Title2=nw2, Sz2=size_nw2, Title3=nw3,
-                           Sz3=size_nw3,Cat1=user_data[6], Cat2=user_data[7], Cat3=user_data[8])
+    return render_template('main_page.html', Title1=nw1, Sz1=size_nw1, Title2=nw2, Sz2=size_nw2, Title3=nw3, Sz3=size_nw3,
+            Title4=nw4, Sz4=size_nw4, Title5=nw5, Sz5=size_nw5, Cat1=user_data[6], Cat2=user_data[7], Cat3=user_data[8])
+
+@views.route("/share_news", methods=['GET', 'POST'])
+def share_news():
+    from venv.controller import Add_to_Slist, User_Act_Add
+    u_id = session["u_id"]
+
+    if request.method == 'POST':
+        u_share = request.form['u_share']
+        User_Act_Add(u_id, 'share news with friends')
+        Add_to_Slist(u_id, u_share)
+        return redirect(url_for("views.main_page"))
+
+    return redirect(url_for("views.main_page"))
+
+
+@views.route("/read_later", methods=['GET', 'POST'])
+def read_later():
+    from venv.controller import Add_to_Wlist, User_Act_Add
+    u_id = session["u_id"]
+
+    if request.method == 'POST':
+        u_read = request.form['u_read']
+        User_Act_Add(u_id, 'added news in watch list')
+        Add_to_Wlist(u_id, u_read)
+        return redirect(url_for("views.main_page"))
+
+    return redirect(url_for("views.main_page"))
+
+@views.route("/add_likes", methods=['GET', 'POST'])
+def add_likes():
+    from venv.controller import User_Act_Add, Nw_Add_Like
+    u_id = session["u_id"]
+
+    if request.method == 'POST':
+        nw_id = request.form['u_like']
+        Nw_Add_Like(nw_id)
+        User_Act_Add(u_id, 'added like to a news')
+        return redirect(url_for("views.main_page"))
+
+    return redirect(url_for("views.main_page"))
 
 
 @views.route("/profile", methods=['GET', 'POST'])
@@ -96,6 +143,7 @@ def profile_update():
     u_id = session["u_id"]
     user_data = User_Data(u_id)
     u_act = User_Act_Get(u_id)
+    u_act.reverse()
     Sz = len(u_act)
     if Sz>10:
         Sz=10
@@ -144,25 +192,30 @@ def send_fr_req():
         msg='Friend request sent'
         Send_Fr_Req(u_rec, u_send)
         User_Act_Add(u_send, msg)
-        return render_template('messages.html', message=msg)
+        return render_template('messages.html', message=msg, Sz1=0, Sz2=0, Sz3=0)
 
-    return redirect(url_for("views.messages"))
+    return redirect(url_for("views.messages"), Sz1=0, Sz2=0, Sz3=0)
 
 
 @views.route('/messages', methods=['GET', 'POST'])
 def messages():
-    from venv.controller import User_Data, Get_Fr_Req, Pr_User
+    from venv.controller import User_Data, Get_Fr_Req, Pr_User, Friends_Fr_List
     u_id = session["u_id"]
     user_data = User_Data(u_id)
+    
     u_reqs = Get_Fr_Req(u_id)
     Sz1 = len(u_reqs)
+    
     s_reqs = Pr_User(u_id)
     Sz2 = len(s_reqs)
 
+    fr_fr_list = Friends_Fr_List(u_id)
+    Sz3 = len(fr_fr_list)
+    
     if Sz2 > 5:
         Sz2 = 5
 
-    return render_template('messages.html', Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs)
+    return render_template('messages.html', Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs,Sz3=Sz3, fr_list=fr_fr_list)
 
 @views.route('/accept_req', methods=['GET', 'POST'])
 def accept_req():
@@ -175,9 +228,10 @@ def accept_req():
         Decide_Fr_Req(msg_id, u_dec)
         msg = "Accepted Friend Request"
         User_Act_Add(u_id, msg)
-        return render_template('messages.html', message=msg)
+        return render_template('messages.html', message=msg, Sz1=0, Sz2=0, Sz3=0)
 
-    return redirect(url_for("views.messages"))
+    return redirect(url_for("views.messages"), Sz1=0, Sz2=0, Sz3=0)
+
 
 @views.route('/reject_req', methods=['GET', 'POST'])
 def reject_req():
@@ -190,15 +244,18 @@ def reject_req():
         Decide_Fr_Req(msg_id, u_dec)
         msg = "Rejected Friend Request"
         User_Act_Add(u_id, msg)
-        return render_template('messages.html', message=msg)
+        return render_template('messages.html', message=msg, Sz1=0, Sz2=0, Sz3=0)
 
-    return redirect(url_for("views.messages"))
+    return redirect(url_for("views.messages"), Sz1=0, Sz2=0, Sz3=0)
+
 
 @views.route('/send_invite', methods=['GET', 'POST'])
 def send_invite():
-    from venv.controller import app, mail
+    from venv.controller import app, mail, User_Act_Add
+
+    u_id = session["u_id"]
     fr_mail = request.form['email']
-    email = session['email']
+    email = session["email"]
     passwrd = request.form['pass']
     app.config['MAIL_USERNAME'] = email
     app.config['MAIL_PASSWORD'] = passwrd
@@ -209,6 +266,7 @@ def send_invite():
         msg.body = "Hey There, inviting you to the BlueBook web application @ bluebookcanada.herokuapp.com, JOIN TODAY!!!)"
         mail.send(msg)
         msg1='Invite email sent successfully'
+        User_Act_Add(u_id, msg1)
         return render_template('profile_update.html', message=msg1)
 
     return redirect(url_for("views.profile_update"))
@@ -218,9 +276,23 @@ def user_activities():
     from venv.controller import User_Act_Get
     u_id = session["u_id"]
     u_act = User_Act_Get(u_id)
+    u_act.reverse()
     Sz = len(u_act)
-
     return render_template('user_activities.html', sz=Sz, uact=u_act)
+
+@views.route("/user_profile", methods=['GET', 'POST'])
+def user_profile():
+    from venv.controller import User_Act_Add, User_Data
+    u_id = session["u_id"]
+    if request.method == 'POST':
+        u_fr = int(request.form['u_fr'])
+        user_data = User_Data(u_fr)
+        msg = "visited user profile"
+        User_Act_Add(u_id, msg)
+        return render_template('user_profile.html', username=user_data[0], firstname=user_data[2], lastname=user_data[3], 
+                               country=user_data[5], cat1=user_data[6], cat2=user_data[7], cat3=user_data[8], u_fr=u_fr)
+
+    return render_template('user_profile.html')
 
 
 @views.route("/logout")

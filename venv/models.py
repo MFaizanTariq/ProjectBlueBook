@@ -24,6 +24,8 @@ class User(db.Model):
     u_act = db.relationship('User_Activity', backref=db.backref('user'))
     u_msg = db.relationship('User_Message', backref=db.backref('user'))
     u_fr = db.relationship('User_Fr_List', backref=db.backref('user'))
+    u_sl = db.relationship('Share_List', backref=db.backref('user'))
+    u_wl = db.relationship('Watch_List', backref=db.backref('user'))
 
     def Add_User(uname, fullname, firstname, lastname, email, password, location, nw_per_page, cat_1, cat_2, cat_3):
         new_user = User(uname=uname, fullname=fullname, firstname=firstname, lastname=lastname, email=email, 
@@ -81,6 +83,11 @@ class User(db.Model):
         db.session.query(User).filter(User.id == u_id).update({'firstname':firstname, 'lastname' : lastname, 'location' : location})
         db.session.commit()
         return
+
+    def Fr_List(u_id):
+        u_data = db.session.query(User).filter(User.id==u_id).first()
+        return u_data
+
     def All_Data():
         u_datas = db.session.query(User).all()
         return u_datas
@@ -93,15 +100,28 @@ class Nw_Data(db.Model):
     Title = db.Column(db.String(100), nullable=False)
     Desc = db.Column(db.String(250), nullable=False)
     Link = db.Column(db.String(100))
+    Likes = db.Column(db.Integer)
 
     def News_Fetch(Country, Category):
         news = db.session.query(Nw_Data).filter(Nw_Data.Country == Country, Nw_Data.Category == Category)
         return news
     
-    def Add_News(Category, Country, Nw_date, Title, Desc, Link):
-        news = Nw_Data(Category=Category, Country=Country, Nw_date=Nw_date, Title=Title, Desc=Desc, Link=Link) 
+    def Add_News(Category, Country, Nw_date, Title, Desc, Link, Likes):
+        news = Nw_Data(Category=Category, Country=Country, Nw_date=Nw_date, Title=Title, Desc=Desc, Link=Link, Likes=Likes) 
         db.session.add(news)
         db.session.commit()
+    def Add_Like(nw_id):
+        nw = db.session.query(Nw_Data).filter(Nw_Data.id == nw_id).first()
+        nw_like = nw.Likes
+        nw_like += 1
+        db.session.query(Nw_Data).filter(Nw_Data.id == nw_id).update({'Likes': nw_like})
+        db.session.commit()
+        return
+    def Get_News(nw_id):
+        nw = db.session.query(Nw_Data).filter(Nw_Data.id == nw_id).first()
+        return nw
+
+
 
 class User_Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -115,7 +135,7 @@ class User_Activity(db.Model):
         db.session.commit()
 
     def Fetch_Activity(u_id):
-        u_acts= db.session.query(User_Activity).filter(User_Activity.u_id == u_id)
+        u_acts = db.session.query(User_Activity).order_by(User_Activity.id.desc()).limit(50)
         return u_acts
 
 class User_Message(db.Model):
@@ -165,6 +185,32 @@ class User_Fr_List(db.Model):
     def All_Fr_List():
         all_frds = db.session.query(User_Fr_List).all()
         return all_frds
+
+class Share_List(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    nw_id = db.Column(db.Integer, nullable=False)
+
+    def Share_News(u_id,nw_id):
+        u_share = Share_List(u_id=u_id, nw_id=nw_id)
+        db.session.add(u_share)
+        db.session.commit()
+    def Get_Shared_News(u_id):
+        sr_list = db.session.query(Share_List).filter(Share_List.u_id == u_id)
+        return sr_list
+class Watch_List(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    nw_id = db.Column(db.Integer, nullable=False)
+
+    def Read_News(u_id,nw_id):
+        u_read = Watch_List(u_id=u_id, nw_id=nw_id)
+        db.session.add(u_read)
+        db.session.commit()
+
+    def U_Wlist(u_id):
+        watch_list = db.session.query(Watch_List).filter(Watch_List.u_id == u_id)
+        return watch_list
 
 
 if not path.exists('instance/' + DB_NAME):

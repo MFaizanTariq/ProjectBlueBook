@@ -34,8 +34,7 @@ mail = Mail(app)
 scheduler = APScheduler()
 scheduler.init_app(app)
 
-from venv.models import User, Nw_Data, User_Activity, User_Message, User_Fr_List
-
+from venv.models import User, Nw_Data, User_Activity, User_Message, User_Fr_List, Watch_List, Share_List
 
 def User_Pre_Req(uname, email):
     msg_uname = 'Username aready exists'
@@ -57,6 +56,8 @@ def Add_Def_User(uname, fullname, firstname, lastname, email, password, location
 
     User.Add_User(uname, fullname, firstname, lastname, email, password, location, def_nw_pp,
              def_cat_1, def_cat_2, def_cat_3)
+    return
+
 
 def User_Data(u_id):
     cat = User.User_Cat(u_id)
@@ -81,7 +82,7 @@ def User_News(country, cat_1):
     nws = Nw_Data.News_Fetch(country, cat_1)
     
     for nw in nws:
-        dt.append([nw.Title, nw.Desc, nw.Link])
+        dt.append([nw.Title, nw.Desc, nw.Link, nw.id, nw.Likes])
 
     return dt
 
@@ -190,11 +191,59 @@ def Pr_User(u_id):
 
     dt.sort(key=lambda tup:tup[5], reverse=True)
     print(dt)
-    
-
-    print(dt)
     return dt
 
+def Friends_Fr_List(u_id):
+    u_data = User.Fr_List(u_id)
+    frs = u_data.u_fr
+    dt = []
+    for fr in frs:
+        fr_id = fr.u_fr
+        if fr_id != u_id:
+            fr_data = User.Fr_List(fr_id)
+            fr_frs = fr_data.u_fr
+            for fr_fr in fr_frs:
+                fr_fr_id = fr_fr.u_fr
+                if fr_fr_id != u_id:
+                    fr_detail = User.User_Details(fr_fr_id)
+                    dt.append([fr_fr_id, fr_detail[0]])
+    return dt
+
+
+def Add_to_Wlist(u_id,nw_id):
+    Watch_List.Read_News(u_id,nw_id)
+    return
+
+def Add_to_Slist(u_id,nw_id):
+    Share_List.Share_News(u_id,nw_id)
+    return
+
+def Fetch_Watch_List(u_id):
+    datas = Watch_List.U_Wlist(u_id)
+    dt = []
+    for data in datas:
+        nw_id = data.nw_id
+        nw = Nw_Data.Get_News(nw_id)
+        dt.append([nw.Title, nw.Desc, nw.Link, nw.id, nw.Likes])
+    return dt
+
+
+def Nw_Add_Like(nw_id):
+    Nw_Data.Add_Like(nw_id)
+    return
+
+def Fetch_Recomm_List(u_id):
+    u_data = User.Fr_List(u_id)
+    frs = u_data.u_fr
+    dt = []
+    for fr in frs:
+        fr_id = fr.u_fr
+        sr_nws = Share_List.Get_Shared_News(fr_id)
+        for sr in sr_nws:
+            nw_id = sr.nw_id
+            nw = Nw_Data.Get_News(nw_id)
+            dt.append([nw.Title, nw.Desc, nw.Link, nw.id, nw.Likes])
+    return dt
 
 def news_fetch1(cat, loc, key):
     nw_dt = datetime.datetime.now()
@@ -223,15 +272,16 @@ def news_fetch1(cat, loc, key):
                 if nw_desc:
                     if nw_link:
                         with app.app_context():
-                            Nw_Data.Add_News(cat, loc, nw_dt, nw_t, nw_desc, nw_link)
+                            nw_likes = 0
+                            Nw_Data.Add_News(cat, loc, nw_dt, nw_t, nw_desc, nw_link, nw_likes)
                         print('added')
 
   
     print('Successfully updated NEWS database with country: ', loc, ' and category: ', cat)
 
 
-@scheduler.task('cron', id='1', hour='18', minute='03')
-def news_fetch():
+@scheduler.task('cron', id='1', hour='13', minute='00')
+def news_fetch_sch():
     news_fetch1('entertainment', 'australia', key9)
     news_fetch1('business', 'australia', key1)
     news_fetch1('sports', 'australia', key1)

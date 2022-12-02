@@ -30,73 +30,112 @@
 </head>
 <body>
 
-    <nav class="main-2">
-        <div class="nav nav-tabs" id="messages2" role="tablist">
-            <button class="nav-link active" id="send-req2-tab" data-bs-toggle="tab" data-bs-target="#send-req2" type="button" role="tab" aria-controls="send-req2" aria-selected="false">Send Friend Requests</button>
-            <button class="nav-link" id="rec-req2-tab" data-bs-toggle="tab" data-bs-target="#rec-req2" type="button" role="tab" aria-controls="rec-req2" aria-selected="false">Check Friend Requests</button>
-        </div>
-    </nav>
+<nav class="main-2">
+    <div class="nav nav-tabs" id="messages2" role="tablist">
+        <button class="nav-link active" id="send-req2-tab" data-bs-toggle="tab" data-bs-target="#send-req2" type="button" role="tab" aria-controls="send-req2" aria-selected="false">Send Friend Requests</button>
+        <button class="nav-link" id="rec-req2-tab" data-bs-toggle="tab" data-bs-target="#rec-req2" type="button" role="tab" aria-controls="rec-req2" aria-selected="false">Check Friend Requests</button>
+        <button class="nav-link" id="friend-list-tab" data-bs-toggle="tab" data-bs-target="#friend-list" type="button" role="tab" aria-controls="friend-list" aria-selected="false">Friend's Friend List</button>
+    </div>
+</nav>
 
-    <div class="tab-content" id="messages2">
+<div class="tab-content" id="messages2">
 
-        <div class="tab-pane main-8 active" id="send-req2" role="tabpanel" aria-labelledby="send-req2-tab" tabindex="10">
-            <div class="justify-content-center my-3">
-                <div>
-                {% if message %}
+    <div class="tab-pane main-8 active" id="send-req2" role="tabpanel" aria-labelledby="send-req2-tab" tabindex="10">
+        <div class="justify-content-center my-3">
+            <div class="row">
+            {% if message %}
                 <p class="row justify-content-center alert alert-success alert-dismissible">{{ message }}</p>
-                {% endif %}
+            {% endif %}
 
-                {% if Sz2 %}
-                {% for ct2 in range(0, Sz2) %}
-                {% if sreq[ct2][0] != 0 %}
+            {% if Sz2 %}
+            {% for ct2 in range(0, Sz2) %}
+            {% if sreq[ct2][0] != 0 %}
+            <input class="form-control text-center" type="text" placeholder="{{sreq[ct2][6]}}" aria-label="Disabled input example" disabled>
+            <div class="col">
                 <form id="form6" name="form6" method="POST" action="send_fr_req">
-                    <input class="form-control text-center" type="text" placeholder="{{sreq[ct2][6]}}" aria-label="Disabled input example" disabled>
-                    <div class="text-center">
-                        <button name="u_fr" type="submit" value="{{sreq[ct2][0]}}" class="btn btn-sm btn-primary my-1">Send Request</button>
+                <div class="text-center">
+                   <button name="u_fr" type="submit" value="{{sreq[ct2][0]}}" class="btn btn-sm btn-primary my-1">Send Request</button>
+                </div>
+            </form>
+            </div>
+
+            <div class="col">
+            <form id="form10" name="form10" method="POST" action="user_profile">
+                <div class="text-center">
+                <button name="u_fr" type="submit" value="{{sreq[ct2][0]}}" class="btn btn-sm btn-primary my-1">Visit Profile</button>
+                </div>
+            </form>
+            </div>
+
+            {% endif  %}
+            {% endfor %}
+            {% endif %}
+            </div>
+
+            <div>
+                <form id="form7" name="form7" method="POST" action="send_invite">
+                    <label for="email" class="form-label my-3">Email:</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Mention email for invitation">
+                    <label for="password" class="form-label my-3">Password of your registered email:</label>
+                    <input type="password" name="pass" id="pass" class="form-control" placeholder="Enter password">
+                    <div class="text-center my-3">
+                            <button name="Send email invite" type="submit" class="btn btn-sm btn-primary">Send invite</button>
                     </div>
                 </form>
-                {% endif  %}
-                {% endfor %}
-                {% endif %}
-                </div>
-                <div>
-                    <form id="form7" name="form7" method="POST" action="send_invite">
-                        <label for="email" class="form-label my-3">Email:</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="Mention email for invitation">
-                        <label for="password" class="form-label my-3">Password of your registered email:</label>
-                        <input type="password" name="pass" id="pass" class="form-control" placeholder="Enter password">
-
-                        <div class="text-center my-3">
-                                <button name="Send email invite" type="submit" class="btn btn-sm btn-primary">Send invite</button>
-                        </div>
-                     </form>
-                </div>
-
             </div>
-        </div>
 
-        <div class="tab-pane main-8" id="rec-req2" role="tabpanel" aria-labelledby="rec-req2-tab" tabindex="11">
-            {% if Sz1 %}
-            {% for ct1 in range(0, Sz1) %}
+        </div>
+    </div>
+
+    <div class="tab-pane main-8" id="rec-req2" role="tabpanel" aria-labelledby="rec-req2-tab" tabindex="11">
+        {% if Sz1 %}
+        {% for ct1 in range(0, Sz1) %}
+        <input class="form-control text-center" type="text" placeholder="{{ureq[ct1][1]}}" aria-label="Disabled input example" disabled>
+        <div class="row">
+            <div class="col">
             <form id="form5" name="form5" method="POST" action="accept_req">
-                <input class="form-control text-center" type="text" placeholder="{{ureq[ct1][1]}}" aria-label="Disabled input example" disabled>
                 <div class="text-center">
                     <button name="decision" type="submit" value="{{ureq[ct1][2]}}" class="btn btn-sm btn-primary my-1">Accept</button>
                 </div>
             </form>
+            </div>
+
+            <div class="col">
             <form id="form6" name="form6" method="POST" action="reject_req">
                 <div class="text-center">
                     <button name="decision" type="submit" value="{{ureq[ct1][2]}}" class="btn btn-sm btn-primary my-1 ">Reject</button>
                 </div>
             </form>
+            </div>
         </div>
-    </div>
-    {% endfor %}
-    {% endif %}
+        {% endfor %}
+        {% endif %}
     </div>
 
-
+    <div class="tab-pane main-8" id="friend-list" role="tabpanel" aria-labelledby="friend-list-tab" tabindex="12">
+        {% for ct2 in range(0, Sz3) %}
+        <input class="form-control text-center" type="text" placeholder="{{fr_list[ct2][1]}}" aria-label="Disabled input example" disabled>
+        <div class="row">
+            <div class="col">
+                <form id="form8" name="form8" method="POST" action="send_fr_req">
+                    <div class="text-center">
+                    <button name="u_fr" type="submit" value="{{fr_list[ct2][0]}}" class="btn btn-sm btn-primary my-1">Send Request</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col">
+                <form id="form9" name="form9" method="POST" action="user_profile">
+                    <div class="text-center">
+                    <button name="u_fr" type="submit" value="{{fr_list[ct2][0]}}" class="btn btn-sm btn-primary my-1">Visit Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
     </div>
+</div>
+
+
 
     <script src="{{url_for('static', filename='/js/bootstrap.bundle.js')}}"></script>
 
