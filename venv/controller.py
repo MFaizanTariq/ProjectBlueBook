@@ -188,10 +188,44 @@ def Pr_User(u_id):
                 dt[x][0]=0
                 break
 
-
     dt.sort(key=lambda tup:tup[5], reverse=True)
     print(dt)
     return dt
+
+
+def Fetch_Fr_List(u_id):
+    u_data = User.Fr_List(u_id)
+    frs = u_data.u_fr
+    dt = []
+    for fr in frs:
+        fr_id = fr.u_fr
+        fr_detail = User.User_Details(fr_id)
+        dt.append([fr_id, fr_detail[0]])
+
+    return dt
+
+def Send_Fr_Msg(u_send, u_rec, msg):
+    msg_tp = 2
+    msg_res = 0
+    User_Message.User_Add_Msg(u_rec, u_send, msg_tp, msg_res, msg)
+    return
+
+def Get_Fr_Msg(u_id):
+    dt = []
+    u_msgs = User_Message.User_Pen_Msg(u_id)
+
+    for u_msg in u_msgs:
+        u_send = u_msg.u_send
+        u_detail = User.User_Details(u_send)
+        u_s_name = u_detail[0]
+        dt.append([u_send, u_s_name, u_msg.msg, u_msg.id])
+
+    return dt
+
+def Mark_Read(msg_id):
+    User_Message.Msg_Update(msg_id)
+    return
+
 
 def Friends_Fr_List(u_id):
     u_data = User.Fr_List(u_id)
@@ -214,9 +248,11 @@ def Add_to_Wlist(u_id,nw_id):
     Watch_List.Read_News(u_id,nw_id)
     return
 
+
 def Add_to_Slist(u_id,nw_id):
     Share_List.Share_News(u_id,nw_id)
     return
+
 
 def Fetch_Watch_List(u_id):
     datas = Watch_List.U_Wlist(u_id)
@@ -244,6 +280,7 @@ def Fetch_Recomm_List(u_id):
             nw = Nw_Data.Get_News(nw_id)
             dt.append([nw.Title, nw.Desc, nw.Link, nw.id, nw.Likes])
     return dt
+
 
 def news_fetch1(cat, loc, key):
     nw_dt = datetime.datetime.now()
@@ -280,7 +317,7 @@ def news_fetch1(cat, loc, key):
     print('Successfully updated NEWS database with country: ', loc, ' and category: ', cat)
 
 
-@scheduler.task('cron', id='1', hour='13', minute='00')
+@scheduler.task('cron', id='1', hour='12', minute='00')
 def news_fetch_sch():
     news_fetch1('entertainment', 'australia', key9)
     news_fetch1('business', 'australia', key1)

@@ -30,11 +30,13 @@
 </head>
 <body>
 
-<nav class="main-2">
+<nav class="main-51">
     <div class="nav nav-tabs" id="messages2" role="tablist">
         <button class="nav-link active" id="send-req2-tab" data-bs-toggle="tab" data-bs-target="#send-req2" type="button" role="tab" aria-controls="send-req2" aria-selected="false">Send Friend Requests</button>
         <button class="nav-link" id="rec-req2-tab" data-bs-toggle="tab" data-bs-target="#rec-req2" type="button" role="tab" aria-controls="rec-req2" aria-selected="false">Check Friend Requests</button>
         <button class="nav-link" id="friend-list-tab" data-bs-toggle="tab" data-bs-target="#friend-list" type="button" role="tab" aria-controls="friend-list" aria-selected="false">Friend's Friend List</button>
+        <button class="nav-link" id="send-msg-tab" data-bs-toggle="tab" data-bs-target="#send-msg" type="button" role="tab" aria-controls="send-msg" aria-selected="false">Send Message</button>
+        <button class="nav-link" id="rec-msg-tab" data-bs-toggle="tab" data-bs-target="#rec-msg" type="button" role="tab" aria-controls="rec-msg" aria-selected="false">Read Message</button>
     </div>
 </nav>
 
@@ -133,6 +135,38 @@
         </div>
         {% endfor %}
     </div>
+
+    <div class="tab-pane main-8" id="send-msg" role="tabpanel" aria-labelledby="send-msg-tab" tabindex="13">
+        {% for ct2 in range(0, Sz4) %}
+        <input class="form-control text-center" type="text" placeholder="{{ufr_list[ct2][1]}}" aria-label="Disabled input example" disabled>
+        <form id="form10" name="form10" method="POST" action="send_msg">
+        <label for="msg" class="form-label">Enter Message:</label>
+        <input type="text" name="msg" id="msg" class="form-control" placeholder="Type Message:">
+            <div class="text-center">
+                <button name="u_fr" type="submit" value="{{ufr_list[ct2][0]}}" class="btn btn-sm btn-primary my-1">Send Message</button>
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+
+    <div class="tab-pane main-8" id="rec-msg" role="tabpanel" aria-labelledby="rec-msg-tab" tabindex="14">
+        {% for ct2 in range(0, Sz5) %}
+        <label class="form-label">Sender:</label>
+        <input class="form-control text-center" type="text" placeholder="{{urmsg[ct2][1]}}" aria-label="Disabled input example" disabled>
+        <label class="form-label">Message:</label>
+        <input class="form-control text-center" type="text" placeholder="{{urmsg[ct2][2]}}" aria-label="Disabled input example" disabled>
+        <form id="form11" name="form11" method="POST" action="msg_mark_read">
+            <div class="text-center">
+                <button name="msg_id" type="submit" value="{{urmsg[ct2][3]}}" class="btn btn-sm btn-primary my-1">Mark as Read</button>
+            </div>
+        </form>
+        <form id="form12" name="form12" method="POST" action="send_msg">
+        <input type="text" name="msg" id="msg" class="form-control" placeholder="Type Reply:">
+            <div class="text-center">
+                <button name="u_fr" type="submit" value="{{urmsg[ct2][0]}}" class="btn btn-sm btn-primary my-1">Reply</button>
+            </div>
+        </form>
+        {% endfor %}
 </div>
 
 

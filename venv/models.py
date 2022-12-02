@@ -122,7 +122,6 @@ class Nw_Data(db.Model):
         return nw
 
 
-
 class User_Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -156,6 +155,10 @@ class User_Message(db.Model):
         u_reqs= db.session.query(User_Message).filter(User_Message.u_rec == u_id, User_Message.msg_tp == 1,
                                                 User_Message.msg_res == 0)
         return u_reqs
+    def User_Pen_Msg(u_id):
+        u_msgs= db.session.query(User_Message).filter(User_Message.u_rec == u_id, User_Message.msg_tp == 2,
+                                                User_Message.msg_res == 0)
+        return u_msgs
 
     def Msg_Detail(id):
         msg_data = db.session.query(User_Message).filter(User_Message.id == id).first()
@@ -198,6 +201,7 @@ class Share_List(db.Model):
     def Get_Shared_News(u_id):
         sr_list = db.session.query(Share_List).filter(Share_List.u_id == u_id)
         return sr_list
+    
 class Watch_List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
