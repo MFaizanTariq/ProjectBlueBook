@@ -138,3 +138,11 @@
     left: 10%;
     width: 80%;
 }
+
+.main-50{
+    position: absolute;
+    align-content: center;
+    top: 12%;
+    left: 35%;
+    width: 30%;
+}
