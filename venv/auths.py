@@ -49,16 +49,22 @@ def callback():
     from venv.controller import User_Pre_Req, Add_Def_User
 
     time.sleep(1)
+
     if not session["state"] == request.args["state"]:
         return redirect(url_for("views.index"))
 
     flow.fetch_token(authorization_response=request.url)
-    print("stuck at 0")
+
     time.sleep(1)
 
     credentials = flow.credentials
+
+    if not session["state"] == request.args["state"]:
+        return redirect(url_for("views.index"))
+
     request_session = requests.session()
-    #cached_session = cachecontrol.CacheControl(request_session)
+    time.sleep(1)
+
     token_request = google.auth.transport.requests.Request(session=request_session)
 
     id_info = id_token.verify_oauth2_token(
@@ -74,7 +80,7 @@ def callback():
     session["email"] = id_info.get("email")
 
     form = RegisterForm()
-    print("stuck at 7")
+
     if request.method == "POST":
         uname = form.username.data
         fullname = session["name"]
@@ -93,13 +99,14 @@ def callback():
         else:
             return render_template('signup.html', form=form, message=msg)
 
-    print("stuck at 8")
     return render_template('signup.html', form=form)
 
 
 @auths.route('/signup_facebook')
 def signup_facebook():
     from venv.controller import oauth
+
+    time.sleep(1)
 
     oauth.register(
         name='facebook',
@@ -112,8 +119,6 @@ def signup_facebook():
         api_base_url='https://graph.facebook.com/',
         client_kwargs={'scope': 'email'},
     )
-
-    time.sleep(1)
 
     redirect_uri = url_for('auths.facebook_auth', _external=True)
     return oauth.facebook.authorize_redirect(redirect_uri)
