@@ -44,8 +44,6 @@ def signup_google():
     session["state"] = state
 
     time.sleep(1)
-    if not session["state"] == request.args["state"]:
-        return redirect(url_for("views.index"))
 
     return redirect(authorization_url)
 
