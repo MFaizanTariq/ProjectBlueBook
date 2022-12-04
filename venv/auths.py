@@ -44,49 +44,28 @@ def signup_google():
     session["state"] = state
     return redirect(authorization_url)
 
-
-@auths.route("/callback")
+@auths.route("/callback", methods=['GET', 'POST'])
 def callback():
+    from venv.controller import User_Pre_Req, Add_Def_User
+
     flow.fetch_token(authorization_response=request.url)
 
     if not session["state"] == request.args["state"]:
         return redirect(url_for("views.index"))
 
-    """ credentials = flow.credentials
-    request_session = requests.session()
-    cached_session = cachecontrol.CacheControl(request_session)
-    token_request = google.auth.transport.requests.Request(session=cached_session)
-
-    time.sleep(1)
+    print("stuck at 0")
+    time.sleep(3)
 
     if not session["state"] == request.args["state"]:
         return redirect(url_for("views.index"))
 
-    id_info = id_token.verify_oauth2_token(
-        id_token=credentials._id_token,
-        request=token_request,
-        audience=google_client_id
-    )
-
-    session["google_id"] = id_info.get("sub")
-    session["name"] = id_info.get("name")
-    session["email"] = id_info.get("email")"""
-
-    return redirect("/protected_area")
-
-@auths.route("/protected_area", methods=['GET', 'POST'])
-def protected_area():
-    from venv.controller import User_Pre_Req, Add_Def_User
-    print("stuck at 0")
     credentials = flow.credentials
     print("stuck at 1")
     request_session = requests.session()
     print("stuck at 2")
-    time.sleep(1)
     print("stuck at 3")
     cached_session = cachecontrol.CacheControl(request_session)
     print("stuck at 4")
-    time.sleep(1)
     print("stuck at 5")
     token_request = google.auth.transport.requests.Request(session=cached_session)
 
