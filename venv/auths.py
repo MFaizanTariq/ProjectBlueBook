@@ -79,13 +79,18 @@ def protected_area():
     from venv.controller import User_Pre_Req, Add_Def_User
 
     credentials = flow.credentials
+    print("stuck at 1")
     request_session = requests.session()
+    print("stuck at 2")
     time.sleep(1)
+    print("stuck at 3")
     cached_session = cachecontrol.CacheControl(request_session)
+    print("stuck at 4")
     time.sleep(1)
+    print("stuck at 5")
     token_request = google.auth.transport.requests.Request(session=cached_session)
 
-
+    print("stuck at 6")
     id_info = id_token.verify_oauth2_token(
         id_token=credentials._id_token,
         request=token_request,
@@ -99,7 +104,7 @@ def protected_area():
     session["email"] = id_info.get("email")
 
     form = RegisterForm()
-
+    print("stuck at 7")
     if request.method == "POST":
         uname = form.username.data
         fullname = session["name"]
@@ -118,6 +123,7 @@ def protected_area():
         else:
             return render_template('signup.html', form=form, message=msg)
 
+    print("stuck at 8")
     return render_template('signup.html', form=form)
 
 
