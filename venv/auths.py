@@ -77,7 +77,7 @@ def callback():
 @auths.route("/protected_area", methods=['GET', 'POST'])
 def protected_area():
     from venv.controller import User_Pre_Req, Add_Def_User
-
+    print("stuck at 0")
     credentials = flow.credentials
     print("stuck at 1")
     request_session = requests.session()
