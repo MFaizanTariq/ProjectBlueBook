@@ -42,6 +42,11 @@ def signup():
 def signup_google():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
+
+    time.sleep(1)
+    if not session["state"] == request.args["state"]:
+        return redirect(url_for("views.index"))
+
     return redirect(authorization_url)
 
 @auths.route("/callback", methods=['GET', 'POST'])
@@ -49,23 +54,14 @@ def callback():
     from venv.controller import User_Pre_Req, Add_Def_User
 
     time.sleep(1)
-
-    if not session["state"] == request.args["state"]:
-        return redirect(url_for("views.index"))
-
     flow.fetch_token(authorization_response=request.url)
 
     time.sleep(1)
 
     credentials = flow.credentials
-
-    if not session["state"] == request.args["state"]:
-        return redirect(url_for("views.index"))
-
     request_session = requests.session()
-    time.sleep(1)
-
-    token_request = google.auth.transport.requests.Request(session=request_session)
+    cached_session = cachecontrol.CacheControl(request_session)
+    token_request = google.auth.transport.requests.Request(session=cached_session)
 
     id_info = id_token.verify_oauth2_token(
         id_token=credentials._id_token,
@@ -73,14 +69,12 @@ def callback():
         audience=google_client_id
     )
 
-    str(id_info)
-    print(id_info['given_name'])
     session["google_id"] = id_info.get("sub")
     session["name"] = id_info.get("name")
     session["email"] = id_info.get("email")
 
     form = RegisterForm()
-
+  
     if request.method == "POST":
         uname = form.username.data
         fullname = session["name"]
@@ -119,13 +113,14 @@ def signup_facebook():
         api_base_url='https://graph.facebook.com/',
         client_kwargs={'scope': 'email'},
     )
-
+  
     redirect_uri = url_for('auths.facebook_auth', _external=True)
     return oauth.facebook.authorize_redirect(redirect_uri)
 
 @auths.route('/facebook/auth/')
 def facebook_auth():
     from venv.controller import oauth
+
     time.sleep(1)
     token = oauth.facebook.authorize_access_token()
 
