@@ -52,7 +52,7 @@ def callback():
     if not session["state"] == request.args["state"]:
         return redirect(url_for("views.index"))
 
-    credentials = flow.credentials
+    """ credentials = flow.credentials
     request_session = requests.session()
     cached_session = cachecontrol.CacheControl(request_session)
     token_request = google.auth.transport.requests.Request(session=cached_session)
@@ -70,28 +70,33 @@ def callback():
 
     session["google_id"] = id_info.get("sub")
     session["name"] = id_info.get("name")
-    session["email"] = id_info.get("email")
+    session["email"] = id_info.get("email")"""
+
     return redirect("/protected_area")
 
 @auths.route("/protected_area", methods=['GET', 'POST'])
 def protected_area():
     from venv.controller import User_Pre_Req, Add_Def_User
 
-    """credentials = flow.credentials
+    credentials = flow.credentials
     request_session = requests.session()
     cached_session = cachecontrol.CacheControl(request_session)
     token_request = google.auth.transport.requests.Request(session=cached_session)
+
+    time.sleep(1)
+
     id_info = id_token.verify_oauth2_token(
         id_token=credentials._id_token,
         request=token_request,
         audience=google_client_id
     )
+
     str(id_info)
     print(id_info['given_name'])
     session["google_id"] = id_info.get("sub")
     session["name"] = id_info.get("name")
     session["email"] = id_info.get("email")
-    """
+
     form = RegisterForm()
 
     if request.method == "POST":

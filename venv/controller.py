@@ -91,7 +91,7 @@ def User_Act_Add(u_id, det):
     User_Activity.Add_Activity(u_id, act_dt, det)
     return
 
-def User_Act_Get(u_id):
+def User_Act_Get(u_id): 
     u_acts = User_Activity.Fetch_Activity(u_id)
     dt = []
     for u_act in u_acts:
