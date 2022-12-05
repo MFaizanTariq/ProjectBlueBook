@@ -47,9 +47,14 @@ def signup_google():
 
 @auths.route("/callback", methods=['GET', 'POST'])
 def callback():
-    from venv.controller import User_Pre_Req, Add_Def_User
     flow.fetch_token(authorization_response=request.url)
 
+    return redirect("/protected_area")
+
+
+@auths.route("/protected_area", methods=['GET', 'POST'])
+def protected_area():
+    from venv.controller import User_Pre_Req, Add_Def_User
 
     credentials = flow.credentials
     request_session = requests.session()
