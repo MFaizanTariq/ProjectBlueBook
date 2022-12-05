@@ -144,7 +144,6 @@ def profile_update():
     u_id = session["u_id"]
     user_data = User_Data(u_id)
     u_act = User_Act_Get(u_id)
-    u_act.reverse()
     Sz = len(u_act)
     if Sz>10:
         Sz=10
@@ -298,7 +297,6 @@ def user_activities():
     from venv.controller import User_Act_Get
     u_id = session["u_id"]
     u_act = User_Act_Get(u_id)
-    u_act.reverse()
     Sz = len(u_act)
     return render_template('user_activities.html', sz=Sz, uact=u_act)
 

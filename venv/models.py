@@ -134,7 +134,7 @@ class User_Activity(db.Model):
         db.session.commit()
 
     def Fetch_Activity(u_id):
-        u_acts = db.session.query(User_Activity).order_by(User_Activity.id.desc()).limit(50)
+        u_acts = db.session.query(User_Activity).filter(User_Activity.u_id == u_id)
         return u_acts
 
 class User_Message(db.Model):
