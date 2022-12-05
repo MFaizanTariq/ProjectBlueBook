@@ -226,8 +226,25 @@ def messages():
 
 @views.route('/accept_req', methods=['GET', 'POST'])
 def accept_req():
-    from venv.controller import Decide_Fr_Req, User_Act_Add
+    from venv.controller import Decide_Fr_Req, User_Act_Add, Get_Fr_Req, Pr_User, Friends_Fr_List, Fetch_Fr_List, Get_Fr_Msg
     u_id = session["u_id"]
+    u_reqs = Get_Fr_Req(u_id)
+    Sz1 = len(u_reqs)
+
+    s_reqs = Pr_User(u_id)
+    Sz2 = len(s_reqs)
+
+    if Sz2 > 5:
+        Sz2 = 5
+
+    fr_fr_list = Friends_Fr_List(u_id)
+    Sz3 = len(fr_fr_list)
+
+    ur_fr_list = Fetch_Fr_List(u_id)
+    Sz4 = len(ur_fr_list)
+
+    ur_msg = Get_Fr_Msg(u_id)
+    Sz5 = len(ur_msg)
 
     if request.method == 'POST':
         msg_id = int(request.form['decision'])
@@ -235,15 +252,34 @@ def accept_req():
         Decide_Fr_Req(msg_id, u_dec)
         msg = "Accepted Friend Request"
         User_Act_Add(u_id, msg)
-        return render_template('messages.html', message=msg, Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
+        return render_template('messages.html', message=msg, Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs,Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
-    return redirect(url_for("views.messages"), Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
-
+    return render_template('messages.html', Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs,Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
 @views.route('/reject_req', methods=['GET', 'POST'])
 def reject_req():
-    from venv.controller import Decide_Fr_Req, User_Act_Add
+    from venv.controller import Decide_Fr_Req, User_Act_Add, Get_Fr_Req, Pr_User, Friends_Fr_List, Fetch_Fr_List, Get_Fr_Msg
     u_id = session["u_id"]
+
+    u_reqs = Get_Fr_Req(u_id)
+    Sz1 = len(u_reqs)
+
+    s_reqs = Pr_User(u_id)
+    Sz2 = len(s_reqs)
+
+    if Sz2 > 5:
+        Sz2 = 5
+
+    fr_fr_list = Friends_Fr_List(u_id)
+    Sz3 = len(fr_fr_list)
+
+    ur_fr_list = Fetch_Fr_List(u_id)
+    Sz4 = len(ur_fr_list)
+
+    ur_msg = Get_Fr_Msg(u_id)
+    Sz5 = len(ur_msg)
 
     if request.method == 'POST':
         msg_id = int(request.form['decision'])
@@ -251,23 +287,45 @@ def reject_req():
         Decide_Fr_Req(msg_id, u_dec)
         msg = "Rejected Friend Request"
         User_Act_Add(u_id, msg)
-        return render_template('messages.html', message=msg, Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
+        return render_template('messages.html', message=msg, Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs, Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
-    return redirect(url_for("views.messages"), Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
+    return render_template('messages.html', Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs, Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
 @views.route('/msg_mark_read', methods=['GET', 'POST'])
 def msg_mark_read():
-    from venv.controller import User_Act_Add, Mark_Read
+    from venv.controller import User_Act_Add, Mark_Read, Get_Fr_Req, Pr_User, Friends_Fr_List, Fetch_Fr_List, Get_Fr_Msg
     u_id = session["u_id"]
+
+    u_reqs = Get_Fr_Req(u_id)
+    Sz1 = len(u_reqs)
+
+    s_reqs = Pr_User(u_id)
+    Sz2 = len(s_reqs)
+
+    if Sz2 > 5:
+        Sz2 = 5
+
+    fr_fr_list = Friends_Fr_List(u_id)
+    Sz3 = len(fr_fr_list)
+
+    ur_fr_list = Fetch_Fr_List(u_id)
+    Sz4 = len(ur_fr_list)
+
+    ur_msg = Get_Fr_Msg(u_id)
+    Sz5 = len(ur_msg)
 
     if request.method == 'POST':
         msg_id = int(request.form['msg_id'])
         Mark_Read(msg_id)
         msg = "Friend message marked read"
         User_Act_Add(u_id, msg)
-        return render_template('messages.html', message=msg, Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
+        return render_template('messages.html', message=msg, Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs, Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
-    return redirect(url_for("views.messages"), Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
+    return render_template('messages.html', Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs, Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
 
 @views.route('/send_invite', methods=['GET', 'POST'])
@@ -302,9 +360,27 @@ def user_activities():
 
 @views.route("/send_msg", methods=['GET', 'POST'])
 def send_msg():
-    from venv.controller import User_Act_Add, Send_Fr_Msg
-
+    from venv.controller import User_Act_Add, Send_Fr_Msg, Get_Fr_Req, Pr_User, Friends_Fr_List, Fetch_Fr_List, Get_Fr_Msg
     u_id = session["u_id"]
+
+    u_reqs = Get_Fr_Req(u_id)
+    Sz1 = len(u_reqs)
+
+    s_reqs = Pr_User(u_id)
+    Sz2 = len(s_reqs)
+
+    if Sz2 > 5:
+        Sz2 = 5
+
+    fr_fr_list = Friends_Fr_List(u_id)
+    Sz3 = len(fr_fr_list)
+
+    ur_fr_list = Fetch_Fr_List(u_id)
+    Sz4 = len(ur_fr_list)
+
+    ur_msg = Get_Fr_Msg(u_id)
+    Sz5 = len(ur_msg)
+
 
     if request.method == 'POST':
         u_fr = int(request.form['u_fr'])
@@ -312,9 +388,11 @@ def send_msg():
         Send_Fr_Msg(u_id, u_fr, u_msg)
         msg = 'Message sent to friend'
         User_Act_Add(u_id, msg)
-        return render_template('messages.html', message=msg, Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
+        return render_template('messages.html', message=msg, Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs, Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
-    return redirect(url_for("views.messages"), Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
+    return render_template('messages.html', Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs, Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
 
 @views.route("/user_profile", methods=['GET', 'POST'])
