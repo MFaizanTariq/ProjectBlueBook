@@ -43,18 +43,13 @@ def signup_google():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
 
-    time.sleep(1)
-
     return redirect(authorization_url)
 
 @auths.route("/callback", methods=['GET', 'POST'])
 def callback():
     from venv.controller import User_Pre_Req, Add_Def_User
-
-    time.sleep(1)
     flow.fetch_token(authorization_response=request.url)
 
-    time.sleep(1)
 
     credentials = flow.credentials
     request_session = requests.session()
@@ -98,7 +93,6 @@ def callback():
 def signup_facebook():
     from venv.controller import oauth
 
-    time.sleep(1)
 
     oauth.register(
         name='facebook',
@@ -119,7 +113,6 @@ def signup_facebook():
 def facebook_auth():
     from venv.controller import oauth
 
-    time.sleep(1)
     token = oauth.facebook.authorize_access_token()
 
     resp = oauth.facebook.get(
