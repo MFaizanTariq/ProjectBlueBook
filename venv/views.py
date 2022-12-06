@@ -174,27 +174,55 @@ def profile_update2():
         nw_lastname = request.form['lastname']
         nw_country = request.form['country']
         nw_country = nw_country.lower()
-        User_Update(u_id, nw_firstname, nw_lastname, nw_country)
-        msg = 'User details successfully updated!!!'
-        User_Act_Add(u_id, msg)
-        return render_template('profile_update.html', username=user_data[0], email=user_data[4], firstname=nw_firstname,
-                lastname=nw_lastname, country=nw_country, cat1=user_data[6], cat2=user_data[7], cat3=user_data[8], message=msg)
+        msg = "Please enter country"
+        if not nw_country=="":
+            User_Update(u_id, nw_firstname, nw_lastname, nw_country)
+            msg = 'User details successfully updated!!!'
+            User_Act_Add(u_id, msg)
+            user_data = User_Data(u_id)
+            return render_template('profile_update.html', username=user_data[0], email=user_data[4], firstname=user_data[2],
+                lastname=user_data[3], country=user_data[5], cat1=user_data[6], cat2=user_data[7], cat3=user_data[8], message=msg)
+
+        return render_template('profile_update.html', username=user_data[0], email=user_data[4], firstname=user_data[2],
+                lastname=user_data[3], country=user_data[5], cat1=user_data[6], cat2=user_data[7], cat3=user_data[8], message=msg)
 
     return render_template('profile_update.html', username=user_data[0], email=user_data[4], firstname=user_data[2],
                 lastname=user_data[3], country=user_data[5], cat1=user_data[6], cat2=user_data[7], cat3=user_data[8])
 
 @views.route('/send_fr_req', methods=['GET', 'POST'])
 def send_fr_req():
-    from venv.controller import User_Act_Add, Send_Fr_Req
-    u_send = session["u_id"]
-    u_rec = int(request.form["u_fr"])
+    from venv.controller import User_Act_Add, Send_Fr_Req, Get_Fr_Req, Pr_User, Friends_Fr_List, Fetch_Fr_List, Get_Fr_Msg
+    u_id = session["u_id"]
+
+    u_reqs = Get_Fr_Req(u_id)
+    Sz1 = len(u_reqs)
+
+    s_reqs = Pr_User(u_id)
+    Sz2 = len(s_reqs)
+
+    if Sz2 > 5:
+        Sz2 = 5
+
+    fr_fr_list = Friends_Fr_List(u_id)
+    Sz3 = len(fr_fr_list)
+
+    ur_fr_list = Fetch_Fr_List(u_id)
+    Sz4 = len(ur_fr_list)
+
+    ur_msg = Get_Fr_Msg(u_id)
+    Sz5 = len(ur_msg)
+
     if request.method == 'POST':
+        u_send = session["u_id"]
         msg='Friend request sent'
+        u_rec = int(request.form["u_fr"])
         Send_Fr_Req(u_rec, u_send)
         User_Act_Add(u_send, msg)
-        return render_template('messages.html', message=msg, Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
+        return render_template('messages.html', message=msg, Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs, Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
-    return redirect(url_for("views.messages"), Sz1=0, Sz2=0, Sz3=0, Sz4=0, Sz5=0)
+    return render_template('messages.html', Sz1=Sz1, ureq=u_reqs, Sz2=Sz2, sreq=s_reqs, Sz3=Sz3, fr_list=fr_fr_list,
+                           Sz4=Sz4, ufr_list=ur_fr_list, Sz5=Sz5, urmsg=ur_msg)
 
 
 @views.route('/messages', methods=['GET', 'POST'])
