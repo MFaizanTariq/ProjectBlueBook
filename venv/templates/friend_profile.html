@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<link>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible">
+    <title>Check Profile</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap-utilities.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='test.css')}}">
+
+    <nav class="navbar navbar-expand-lg bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-blue" href="#">Project BlueBook</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <a class="nav-link active text-white" aria-current="page" href="{{ url_for('views.main_page') }}">Main Page</a>
+                    <a class="nav-link text-white" href="{{ url_for('views.logout') }}">Log Out</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</head>
+<body>
+
+<nav class="main-52">
+    <div class="nav nav-tabs" id="messages2" role="tablist">
+        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+        <button class="nav-link " id="watch_list-tab" data-bs-toggle="tab" data-bs-target="#watch_list" type="button" role="tab" aria-controls="watch_list" aria-selected="false">Watch List</button>
+    </div>
+</nav>
+
+
+<div>
+    <div class=" main-8 tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab" tabindex="10">
+        </form>
+            <label>Username:</label>
+            <input class="form-control my-3" type="text" placeholder="{{username}}" aria-label="Disabled input example" disabled>
+            <label>First Name:</label>
+            <input class="form-control my-3" type="text" placeholder="{{firstname}}" aria-label="Disabled input example" disabled>
+            <label>Last Name:</label>
+            <input class="form-control my-3" type="text" placeholder="{{lastname}}" aria-label="Disabled input example" disabled>
+            <label>Country:</label>
+            <input class="form-control my-3" type="text" placeholder="{{country}}" aria-label="Disabled input example" disabled>
+            <label>User Interests:</label>
+            <input class="form-control my-3" type="text" placeholder="{{cat1}}" aria-label="Disabled input example" disabled>
+            <input class="form-control my-3" type="text" placeholder="{{cat2}}" aria-label="Disabled input example" disabled>
+            <input class="form-control my-3" type="text" placeholder="{{cat3}}" aria-label="Disabled input example" disabled>
+        </form>
+    </div>
+    <div class="tab-pane fade" id="watch_list" role="tabpanel" aria-labelledby="watch_list-tab" tabindex="4">
+        <div class="main-24">
+            {% for ct1 in range(0, Sz4) %}
+                <div class="main-25">
+                    <h4 class="main-6">{{Title4[ct1][0]}}</h4>
+                    <h4 class="main-12">{{Title4[ct1][1]}}</h4>
+                    <div class="row d-flex justify-content-center container">
+                        <div class="col">
+                            <h5><a class="btn btn-sm btn-primary" target='_blank' href="{{Title4[ct1][2]}}">More!</a></h5>
+                        </div>
+                        <div class="col">
+                            <form id="form39" name="form39" method="POST" action="share_news">
+                            <button name="u_share" type="submit" value="{{Title4[ct1][3]}}" class="btn btn-sm btn-dark">Share</button>
+                            </form>
+                        </div>
+                         <div class="col">
+                            <form id="form40" name="form40" method="POST" action="add_likes">
+                            <button name="u_like" type="submit" value="{{Title4[ct1][3]}}" class="btn btn-sm btn-success">{{Title4[ct1][4]}} Likes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+</div>
+
+
+    <script src="{{url_for('static', filename='/js/bootstrap.bundle.js')}}"></script>
+
+</body>
+</html>
