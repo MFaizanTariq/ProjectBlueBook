@@ -34,7 +34,8 @@ mail = Mail(app)
 scheduler = APScheduler()
 scheduler.init_app(app)
 
-from venv.models import User, Nw_Data, User_Activity, User_Message, User_Fr_List, Watch_List, Share_List
+from venv.models import User, Nw_Data, User_Activity, User_Message, User_Fr_List, Watch_List, Share_List, User_Bl_List
+
 
 def User_Pre_Req(uname, email):
     msg_uname = 'Username aready exists'
@@ -124,10 +125,17 @@ def Decide_Fr_Req(msg_id, u_dec):
     msg_data = User_Message.Msg_Detail(msg_id)
     u_id = msg_data.u_rec
     u_fr = msg_data.u_send
+    
     if u_dec == 1:
         User_Fr_List.User_Add_Fr(u_id, u_fr)
         User_Fr_List.User_Add_Fr(u_fr, u_id)
         User_Message.Msg_Update(msg_id)
+    
+    elif u_dec == 2:
+        User_Bl_List.User_Block(u_id, u_fr)
+        User_Bl_List.User_Block(u_fr, u_id)
+        User_Message.Msg_Update(msg_id)
+
     else:
         User_Message.Msg_Update(msg_id)
     return
@@ -152,6 +160,7 @@ def Pr_User(u_id):
     dt = []
     ur = []
     fr_lt = []
+    bl_lt = []
     nw_lt = []
 
     for u_data in u_datas:
@@ -160,13 +169,19 @@ def Pr_User(u_id):
             nw_lt.append([u_data.id])
         else:
             frs=u_data.u_fr
+            blks=u_data.u_bk
             ur.append([u_data.id, u_data.location, u_data.cat_1, u_data.cat_2, u_data.cat_3])
 
     for fr in frs:
         fr_lt.append([fr.u_fr])
 
+    for blk in blks:
+        bl_lt.append([blk.u_bl])
+
     sz = len(dt)
     sz2 = len(fr_lt)
+    sz3 = len(bl_lt)
+
     for x in range(sz):
         frd_ind = 0
         for y in range(1, 5):
@@ -187,6 +202,13 @@ def Pr_User(u_id):
             if nw_lt[x]==fr_lt[y]:
                 dt[x][0]=0
                 break
+
+    for x in range(sz):
+        for y in range(sz3):
+            if nw_lt[x]==bl_lt[y]:
+                dt[x][0]=0
+                break
+
 
     dt.sort(key=lambda tup:tup[5], reverse=True)
     print(dt)
@@ -317,49 +339,49 @@ def news_fetch1(cat, loc, key):
     print('Successfully updated NEWS database with country: ', loc, ' and category: ', cat)
 
 
-@scheduler.task('cron', id='1', hour='12', minute='00')
+@scheduler.task('cron', id='1', hour='11', minute='00')
 def news_fetch_sch():
-    news_fetch1('entertainment', 'australia', key9)
+    news_fetch1('entertainment', 'australia', key1)
     news_fetch1('business', 'australia', key1)
-    news_fetch1('sports', 'australia', key1)
-    news_fetch1('health', 'australia', key1)
-    news_fetch1('science', 'australia', key2)
-    news_fetch1('technology', 'australia', key2)
-    news_fetch1('entertainment', 'canada', key2)
-    news_fetch1('business', 'canada', key2)
-    news_fetch1('sports', 'canada', key2)
-    news_fetch1('health', 'canada', key3)
-    news_fetch1('technology', 'canada', key3)
-    news_fetch1('science', 'canada', key3)
-    news_fetch1('entertainment', 'india', key3)
-    news_fetch1('business', 'india', key3)
-    news_fetch1('sports', 'india', key4)
-    news_fetch1('health', 'india', key4)
-    news_fetch1('technology', 'india', key4)
-    news_fetch1('science', 'india', key4)
-    news_fetch1('entertainment', 'united_kingdom', key4)
-    news_fetch1('business', 'united_kingdom', key5)
-    news_fetch1('sports', 'united_kingdom', key5)
-    news_fetch1('health', 'united_kingdom', key5)
-    news_fetch1('technology', 'united_kingdom', key5)
-    news_fetch1('science', 'united_kingdom', key5)
-    news_fetch1('entertainment', 'united_states', key6)
-    news_fetch1('business', 'united_states', key6)
-    news_fetch1('sports', 'united_states', key6)
-    news_fetch1('health', 'united_states', key6)
-    news_fetch1('technology', 'united_states', key7)
-    news_fetch1('science', 'united_states', key7)
-    news_fetch1('entertainment', 'italy', key7)
-    news_fetch1('business', 'italy', key7)
-    news_fetch1('sports', 'italy', key7)
-    news_fetch1('health', 'italy', key8)
-    news_fetch1('technology', 'italy', key8)
-    news_fetch1('science', 'italy', key8)
-    news_fetch1('entertainment', 'germany', key8)
-    news_fetch1('business', 'germany', key8)
-    news_fetch1('sports', 'germany', key9)
-    news_fetch1('health', 'germany', key9)
-    news_fetch1('technology', 'germany', key9)
-    news_fetch1('science', 'germany', key9)
+    news_fetch1('sports', 'australia', key2)
+    news_fetch1('health', 'australia', key2)
+    news_fetch1('science', 'australia', key3)
+    news_fetch1('technology', 'australia', key3)
+    news_fetch1('entertainment', 'canada', key4)
+    news_fetch1('business', 'canada', key4)
+    news_fetch1('sports', 'canada', key5)
+    news_fetch1('health', 'canada', key5)
+    news_fetch1('technology', 'canada', key6)
+    news_fetch1('science', 'canada', key6)
+    news_fetch1('entertainment', 'india', key7)
+    news_fetch1('business', 'india', key7)
+    news_fetch1('sports', 'india', key8)
+    news_fetch1('health', 'india', key8)
+    news_fetch1('technology', 'india', key9)
+    news_fetch1('science', 'india', key9)
+    news_fetch1('entertainment', 'united_kingdom', key10)
+    news_fetch1('business', 'united_kingdom', key10)
+    news_fetch1('sports', 'united_kingdom', key11)
+    news_fetch1('health', 'united_kingdom', key11)
+    news_fetch1('technology', 'united_kingdom', key12)
+    news_fetch1('science', 'united_kingdom', key12)
+    news_fetch1('entertainment', 'united_states', key13)
+    news_fetch1('business', 'united_states', key13)
+    news_fetch1('sports', 'united_states', key14)
+    news_fetch1('health', 'united_states', key14)
+    news_fetch1('technology', 'united_states', key15)
+    news_fetch1('science', 'united_states', key15)
+    news_fetch1('entertainment', 'italy', key16)
+    news_fetch1('business', 'italy', key16)
+    news_fetch1('sports', 'italy', key17)
+    news_fetch1('health', 'italy', key17)
+    news_fetch1('technology', 'italy', key18)
+    news_fetch1('science', 'italy', key18)
+    news_fetch1('entertainment', 'germany', key19)
+    news_fetch1('business', 'germany', key19)
+    news_fetch1('sports', 'germany', key20)
+    news_fetch1('health', 'germany', key20)
+    news_fetch1('technology', 'germany', key21)
+    news_fetch1('science', 'germany', key21)
 
 scheduler.start()
