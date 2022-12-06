@@ -24,6 +24,7 @@ class User(db.Model):
     u_act = db.relationship('User_Activity', backref=db.backref('user'))
     u_msg = db.relationship('User_Message', backref=db.backref('user'))
     u_fr = db.relationship('User_Fr_List', backref=db.backref('user'))
+    u_bk = db.relationship('User_Bl_List', backref=db.backref('user'))
     u_sl = db.relationship('Share_List', backref=db.backref('user'))
     u_wl = db.relationship('Watch_List', backref=db.backref('user'))
 
@@ -188,6 +189,19 @@ class User_Fr_List(db.Model):
     def All_Fr_List():
         all_frds = db.session.query(User_Fr_List).all()
         return all_frds
+
+
+class User_Bl_List(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    u_bl = db.Column(db.Integer, nullable=False)
+
+    def User_Block(u_id, u_bl):
+        new_blk = User_Bl_List(u_id=u_id, u_bl=u_bl)
+        db.session.add(new_blk)
+        db.session.commit()
+        return
+
 
 class Share_List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
